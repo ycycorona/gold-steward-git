@@ -2,8 +2,8 @@
   <div class="my-tab-header">
     <!--父组件通过v-model绑定的data属性可以通过this.$emit('input', val)来变更-->
     <button-tab v-model="currPage" :height="35">
-      <button-tab-item >下单</button-tab-item>
-      <button-tab-item >订单查看</button-tab-item>
+      <button-tab-item >order</button-tab-item>
+      <button-tab-item >order list</button-tab-item>
     </button-tab>
   </div>
 </template>
@@ -12,14 +12,20 @@
   import { ButtonTab, ButtonTabItem } from 'vux'
   export default {
     name: '',
+    props:[
+      'value'
+    ],
     components: {
       ButtonTab, ButtonTabItem
     },
     data () {
       return {
-        currPage: 0,
+        currPage:this.value,
         msg: 'Hello World!'
       }
+    },
+    computed:{
+
     },
     watch: {
       currPage (val) {
