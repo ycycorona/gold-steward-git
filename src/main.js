@@ -5,12 +5,16 @@ import FastClick from 'fastclick'
 import VueRouter from 'vue-router'
 import App from './App'
 import TakeOrder from './components/TakeOrder'
+import OrderList from './components/OrderList'
 
 Vue.use(VueRouter)
 
 const routes = [{
   path: '/index',
   component: TakeOrder
+},{
+  path: '/order-list',
+  component: OrderList
 }]
 
 const router = new VueRouter({
