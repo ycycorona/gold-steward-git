@@ -31,6 +31,7 @@ let webpackConfig = {
   },
   module: {
     rules: [
+      /*停止使用elslint*/
 /*      {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
