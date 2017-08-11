@@ -1,9 +1,12 @@
 <template>
   <div id="app">
     <!--顶部页面切换器-->
-    <TabHeader v-model="currPage"></TabHeader>
+    <TabHeader></TabHeader>
     <!--页面路由载入-->
-    <router-view class="router-view"></router-view>
+    <keep-alive>
+      <router-view class="router-view"></router-view>
+    </keep-alive>
+
   </div>
 </template>
 
@@ -18,41 +21,25 @@
     },
     created () {
 
-      /*不同路由时切换顶部的TAB*/
-      let currRoputerPath = this.$route.path;
-      if(currRoputerPath == "/index"){
-        this.currPage = 0;
-        this.$store.state.currPage = 0;
-        console.log("进入"+currRoputerPath);
-      }else if(currRoputerPath == "/order-list"){
-        this.currPage = 1;
-        this.$store.state.currPage = 0;
-        console.log("进入"+currRoputerPath);
-      }
     },
     data () {
       return {
         msg: 'Hello World!',
-        currPage: 0,
         direction: 'forward'
       }
     },
+    computed: {
+
+    },
     watch: {
-      currPage (val) {
-        /*监听currPage变动，载入页面*/
-        if (val === 0) {
-          this.$router.push('/index')
-        } else if (val === 1) {
-          this.$router.push('/order-list')
-        }
-      }
+
     }
   }
 </script>
 
 <style lang="less">
   @import '~vux/src/styles/reset.less';
-
+  @import 'style/base.less';
   body {
     background-color: #fbf9fe;
   }

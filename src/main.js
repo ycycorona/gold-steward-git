@@ -13,14 +13,29 @@ Vue.use(Vuex)
 //vuex配置
 let store=new Vuex.Store({
   state:{
-    currPage:0
+    currPage:0, //当前的Tab页
+    SelectInnAddress:false,
+    SelectStationAddress:false,
+    innInfo:{}
   },
   getters:{
-    getCurrPage(state){
-      return state.currPage;
-    }
+
   },
   mutations:{
+    /*更新currPage*/
+    changeCurrPage(state, newPage){
+      state.currPage = newPage;
+    },
+    /*改变地址选择器的激活状态*/
+    toggleSelectInnAddress(state, newValue){
+      state.SelectInnAddress = newValue;
+    },
+    toggleSelectStationAddress(state, newValue){
+      state.SelectStationAddress = newValue;
+    },
+    inputInnInfo(state, newValue){
+      state.innInfo = newValue;
+    }
 
   },
   actions:{

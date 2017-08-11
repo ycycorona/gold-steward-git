@@ -8,7 +8,7 @@
     </div>
 
     <div class="y-card flex-wrap">
-      <div class="img-wrap">
+      <div class="img-wrap" @click="activeInnAddSelector">
         <img src="/static/imgs/sender.png" width="50" alt="寄件人">
       </div>
       <div>
@@ -16,24 +16,37 @@
           <x-icon type="ios-loop" size="25"></x-icon>
         </Divider>
       </div>
-      <div class="img-wrap">
+      <div class="img-wrap" @click="activeStationAddSelector">
         <img src="/static/imgs/receiver.png" width="50" alt="寄件人">
       </div>
     </div>
+    <SelectInnAddress></SelectInnAddress>
+    <SelectStationAddress></SelectStationAddress>
   </div>
 </template>
 
 <script>
   import { XImg, Divider } from 'vux'
+  import SelectInnAddress from './TakeOrderChildCom/SelectInnAddress'
+  import SelectStationAddress from './TakeOrderChildCom/SelectStationAddress'
   export default {
     name: 'TakeOdder',
     components: {
-      XImg, Divider
+      XImg, Divider, SelectInnAddress, SelectStationAddress
     },
     data () {
       return {
         msg: 'Hello World!'
       }
+    },
+    methods:{
+      activeInnAddSelector(){
+        this.$store.commit('toggleSelectInnAddress',!this.$store.state.SelectInnAddress);
+      },
+      activeStationAddSelector(){
+        this.$store.commit('toggleSelectStationAddress',!this.$store.state.SelectStationAddress);
+      }
+
     }
   }
 </script>

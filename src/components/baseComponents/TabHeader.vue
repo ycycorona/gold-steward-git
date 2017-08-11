@@ -12,24 +12,43 @@
   import { ButtonTab, ButtonTabItem } from 'vux'
   export default {
     name: '',
-    props:[
-      'value'
-    ],
     components: {
       ButtonTab, ButtonTabItem
     },
+    created(){
+      /*页面初始化时，根据不同路由切换顶部的TAB*/
+      let currRoputerPath = this.$route.path;
+      if(currRoputerPath == "/index"){
+        this.$store.commit('changeCurrPage',0)
+        console.log("进入"+currRoputerPath);
+      }else if(currRoputerPath == "/order-list"){
+        this.$store.commit('changeCurrPage',1)
+        console.log("进入"+currRoputerPath);
+      }
+    },
     data () {
       return {
-        currPage:this.value,
         msg: 'Hello World!'
       }
     },
     computed:{
-
+      currPage:{
+        get(){
+          return this.$store.state.currPage;
+        },
+        set(val){
+          this.$store.commit('changeCurrPage',val)
+        }
+      }
     },
     watch: {
       currPage (val) {
-        this.$emit('input', val)
+        /*监听currPage变动，载入页面*/
+        if (val === 0) {
+          this.$router.push('/index')
+        } else if (val === 1) {
+          this.$router.push('/order-list')
+        }
       }
     }
   }
