@@ -7,7 +7,13 @@ import Vuex from 'vuex'
 import App from './App'
 import TakeOrder from './components/TakeOrder'
 import OrderList from './components/OrderList'
+import Hello from './components/Hello'
+import test from './components/test'
+import SubmitOrderTab from './components/baseComponents/SubmitOrderTab'
+import {AjaxPlugin, LoadingPlugin} from 'vux'
 
+Vue.use(LoadingPlugin)
+Vue.use(AjaxPlugin)
 Vue.use(VueRouter)
 Vue.use(Vuex)
 //vuex配置
@@ -16,7 +22,18 @@ let store=new Vuex.Store({
     currPage:0, //当前的Tab页
     SelectInnAddress:false,
     SelectStationAddress:false,
-    innInfo:{}
+    innInfo:{
+      address0:"",
+      address1:"",
+      address2:"",
+      time:"",
+    },
+    stationInfo:{
+      address0:"",
+      address1:"",
+      address2:"",
+      time:""
+    }
   },
   getters:{
 
@@ -35,6 +52,9 @@ let store=new Vuex.Store({
     },
     inputInnInfo(state, newValue){
       state.innInfo = newValue;
+    },
+    inputStationInfo(state, newValue){
+      state.stationInfo = newValue;
     }
 
   },
@@ -44,12 +64,21 @@ let store=new Vuex.Store({
 });
 //路由配置
 const routes = [{
-  path: '/index',
-  component: TakeOrder
+    path: '/index',
+    components: {
+      mainPage:TakeOrder,
+      bottomTab:SubmitOrderTab
+    }
 },{
-  path: '/order-list',
-  component: OrderList
-}]
+    path: '/order-list',
+    components: {
+      mainPage:OrderList,
+    }
+},
+  {
+    path: '/hello',
+    component: Hello
+  }]
 
 const router = new VueRouter({
   routes

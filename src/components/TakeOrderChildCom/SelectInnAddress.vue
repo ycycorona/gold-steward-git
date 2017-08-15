@@ -1,6 +1,7 @@
 <template>
   <div>
-    <popup v-model="SelectInnAddressShow" height="100%">
+    <popup
+      v-model="SelectInnAddressShow" height="100%">
       <div class="popup-full-page">
         <PopupHeader
           left-text="取消"
@@ -33,13 +34,16 @@
             value-text-align="left"
             placeholder="选择区"
             show-name
+            :popup-style="{zIndex: 10002}"
             ref="innPicker"
-            v-model='innInfo.address1'></PopupPicker>
+            v-model='innInfo.address1'
+            @on-show="isPickerMaskShow=true"
+            @on-hide="isPickerMaskShow=false"></PopupPicker>
         </Group>
         <group title="详细地址">
           <x-input title="" v-model="innInfo.address2" placeholder="输入酒店详细地址"></x-input>
         </group>
-        <group title="取货时间">
+        <group title="时间">
           <datetime-view
           v-model="innInfo.time"
           ref="datetime1"
@@ -47,86 +51,39 @@
         </group>
       </div>
     </popup>
+    <!--因为popup已经用了一个masker,所以其内部的popuppicker要另加一个masker-->
+    <Masker
+      :fullscreen="true"
+      v-if="isPickerMaskShow"
+    >
+    </Masker>
   </div>
 </template>
 
 <script>
   import {
     Popup, XSwitch, Group, Cell, XInput, PopupHeader,
-    Picker, DatetimeView,GroupTitle,PopupPicker, dateFormat
+    Picker, DatetimeView,GroupTitle,PopupPicker, dateFormat,
+    Masker
   } from 'vux'
   /*选择器数据初始化*/
-  let QDdistrictList=[
-    [
-      {
-        name: "市南区",
-        value: "370202"
-      },
-      {
-        name: "市北区",
-        value: "370203"
-      },
-      {
-        name: "黄岛区",
-        value: "370211"
-      },
-      {
-        name: "崂山区",
-        value: "370212"
-      },
-      {
-        name: "李沧区",
-        value: "370213"
-      },
-      {
-        name: "城阳区",
-        value: "370214"
-      },
-      {
-        name: "胶州市",
-        value: "370281"
-      },
-      {
-        name: "即墨市",
-        value: "370282"
-      },
-      {
-        name: "平度市",
-        value: "370283"
-      },
-      {
-        name: "莱西市",
-        value: "370285"
-      }
-    ]
-  ];
-  let QDdistrictListMap={
-    "370202": "市南区",
-    "370203": "市北区",
-    "370211": "黄岛区",
-    "370212": "崂山区",
-    "370213": "李沧区",
-    "370214": "城阳区",
-    "370281": "胶州市",
-    "370282": "即墨市",
-    "370283": "平度市",
-    "370285": "莱西市"
-  }
+  import {QDdistrictList, QDdistrictListMap} from '../../data/addressData.js'
   /*获得当前日期*/
   let nowDate = dateFormat(new Date(), 'YYYY-MM-DD HH:mm');
   export default {
     name: 'SelectInnAddress',
     components: {
       Popup, XSwitch, Group, PopupHeader, Picker, Cell, XInput, DatetimeView, GroupTitle,
-      PopupPicker
+      PopupPicker,Masker
     },
     mounted(){
-console.log();
+
 
     },
     data () {
       return {
         msg: 'Hello World!',
+        isPickerMaskShow:false,
         innInfo: {
           address0:"青岛市",
           address1:["370202"],
@@ -152,7 +109,7 @@ console.log();
     methods:{
       confirmInput(){
 
-        let exportAddress = this.innInfo.clone();
+        let exportAddress = JSON.parse(JSON.stringify(this.innInfo));
         exportAddress.address1 = this.address1_name;
 
         this.$store.commit('inputInnInfo',exportAddress);

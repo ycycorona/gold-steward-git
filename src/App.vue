@@ -3,27 +3,38 @@
     <!--顶部页面切换器-->
     <TabHeader></TabHeader>
     <!--页面路由载入-->
+    <div style="">
+      <keep-alive>
+        <router-view name="mainPage" class="router-view main-page" :style="{height: `${height}px`}"></router-view>
+      </keep-alive>
+    </div>
+    <!--页面固定底栏-->
     <keep-alive>
-      <router-view class="router-view"></router-view>
-    </keep-alive>
+      <router-view name="bottomTab" class="router-view">
 
+      </router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script>
-  import { XHeader, ButtonTab, ButtonTabItem } from 'vux'
+  import { TransferDom, XHeader, ButtonTab, ButtonTabItem, Popup } from 'vux'
   import TabHeader from './components/baseComponents/TabHeader'
-
+  import SubmitOrderTab from './components/baseComponents/SubmitOrderTab'
   export default {
     name: 'App',
     components: {
-      XHeader, ButtonTab, ButtonTabItem, TabHeader
+      XHeader, ButtonTab, ButtonTabItem, TabHeader, Popup, SubmitOrderTab
+    },
+    directives: {
+      TransferDom
     },
     created () {
 
     },
     data () {
       return {
+        height: window.innerHeight - 40 - 50,
         msg: 'Hello World!',
         direction: 'forward'
       }
@@ -58,5 +69,10 @@
     margin: 0;
   }
   /*切换路由动画*/
-
+.router-view.main-page{
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 40px;
+  /*box-sizing: border-box;*/
+}
 </style>

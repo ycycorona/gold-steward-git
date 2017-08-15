@@ -1,53 +1,119 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+  <div>
+    <div style="background-color:cornflowerblue;height: 1000px">asdfasdf</div>
+    <!--价格预览以及下单按钮-->
+    <div v-transfer-dom>
+      <popup v-model="show1" max-height="50%">
+        <div class="popup1">
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+          <p>asdfasdfasdfasdf</p>
+        </div>
+      </popup>
+    </div>
+
   </div>
 </template>
 
 <script>
-export default {
-  name: 'hello',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+  import { TransferDom, XImg, Divider, Flexbox, FlexboxItem, CellFormPreview,
+    Group, Cell, Tabbar, TabbarItem, Popup} from 'vux'
+  import SelectInnAddress from './TakeOrderChildCom/SelectInnAddress'
+  import SelectStationAddress from './TakeOrderChildCom/SelectStationAddress'
+  import SubmitOrderTab from './baseComponents/SubmitOrderTab'
+  export default {
+    name: 'TakeOdder',
+    components: {
+      XImg, Divider, SelectInnAddress, SelectStationAddress, Flexbox, FlexboxItem,
+      CellFormPreview, Group, Cell, Tabbar, TabbarItem, SubmitOrderTab, Popup
+    },
+    directives: {
+      TransferDom
+    },
+    data () {
+      return {
+        show1:true,
+        msg: 'Hello World!',
+        list: [{
+          label: 'Apple',
+          value: '3.29'
+        }, {
+          label: 'Banana',
+          value: '1.04'
+        }, {
+          label: 'Fish',
+          value: '8.00'
+        }]
+      }
+    },
+    methods:{
+      activeInnAddSelector(){
+        this.$store.commit('toggleSelectInnAddress',!this.$store.state.SelectInnAddress);
+      },
+      activeStationAddSelector(){
+        this.$store.commit('toggleSelectStationAddress',!this.$store.state.SelectStationAddress);
+      }
+
     }
   }
-}
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
+  .ximg-width-base{
+    width: 100%;
+    height: auto;
+  }
+  .y-card{
+    background-color: white;
+    margin: auto 5px;
+  }
+  .y-card-noback{
+    margin: auto 5px;
+  }
+  .flex-wrap{
+    display: flex;
+    justify-content: space-around;
+    align-items:center;
+  }
+  .flex-wrap>div{
+    flex: 1;
+    flex-grow: 1;
+  }
+  .img-wrap{
+    text-align: center;
+  }
 </style>

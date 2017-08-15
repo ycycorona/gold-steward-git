@@ -1,5 +1,5 @@
 <template>
-  <div class="my-tab-header">
+  <div class="my-tab-header" style="position: absolute">
     <!--父组件通过v-model绑定的data属性可以通过this.$emit('input', val)来变更-->
     <button-tab v-model="currPage" :height="35">
       <button-tab-item >order</button-tab-item>
@@ -71,5 +71,11 @@
   .vux-button-group > a.vux-button-group-current{
     background: #f10215 !important;
     border-bottom: white 5px solid;
+  }
+  .my-tab-header{
+    position: fixed;
+    width: 100%;
+    z-index: 500;
+    top: 0;
   }
 </style>
