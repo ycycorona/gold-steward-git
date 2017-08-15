@@ -82,22 +82,28 @@
           >
             <checker-item :value="0">
               <div class="value-big">0元</div>
-              <div class="value-little">保价800元/件</div>
+              <div class="value-little">保价300元/件</div>
             </checker-item>
-            <checker-item :value="1">
-              <div class="value-big">6元</div>
-              <div class="value-little">保价2000元/件</div>
+            <checker-item :value="5">
+              <div class="value-big">5元</div>
+              <div class="value-little">保价500元/件</div>
             </checker-item>
-            <checker-item :value="2">
-              <div class="value-big">12元</div>
-              <div class="value-little">保价3000元/件</div>
+            <checker-item :value="10">
+              <div class="value-big">10元</div>
+              <div class="value-little">保价1000元/件</div>
             </checker-item>
           </checker>
         </div>
       </Cell>
       <!--联系方式-->
-      <XInput title="联系电话" v-model="bagInfo.phone" placeholder="请输入电话号码"></XInput>
+      <XInput title="联系电话" v-model="bagInfo.phone" placeholder="请输入电话号码">
+        <!--<x-button slot="right" type="primary" mini></x-button>-->
+      </XInput>
       <!--行李图片-->
+      <Cell
+      primary="content"
+      title="">
+      </Cell>
       <UpLoadFile></UpLoadFile>
     </Group>
     <!--<div style="background-color:cornflowerblue;height: 1000px;position: relative">
@@ -122,7 +128,7 @@
 <script>
   import { TransferDom, XImg, Divider, Flexbox, FlexboxItem, CellFormPreview,
     Group, Cell, Tabbar, TabbarItem, Popup, InlineXNumber, Checker, CheckerItem,
-    XInput} from 'vux'
+    XInput,XButton} from 'vux'
   import SelectInnAddress from './TakeOrderChildCom/SelectInnAddress'
   import SelectStationAddress from './TakeOrderChildCom/SelectStationAddress'
   import SubmitOrderTab from './baseComponents/SubmitOrderTab'
@@ -132,7 +138,7 @@
     components: {
       XImg, Divider, SelectInnAddress, SelectStationAddress, Flexbox, FlexboxItem,
       CellFormPreview, Group, Cell, Tabbar, TabbarItem, SubmitOrderTab, Popup, InlineXNumber,
-      Checker, CheckerItem, XInput, UpLoadFile
+      Checker, CheckerItem, XInput, UpLoadFile, XButton
     },
     directives: {
       TransferDom
@@ -145,7 +151,7 @@
         msg: 'Hello World!',
         bagInfo:{
           bagNum:0,
-          insurance:1,
+          insurance:5,
           phone:""
         },
         list: [{
@@ -161,20 +167,16 @@
       }
     },
     computed:{
-/*      InnInfoList(){
-        let rawInfo = this.$store.state.innInfo;
-        return[
-          {
-            label:'',
-            value: rawInfo.address0+rawInfo.address1+rawInfo.address2
+      costObj(){
+        let obj = {
+          sendCost: this.bagInfo.bagNum * 39,
+          insuranceCost: this.bagInfo.insurance * this.bagInfo.bagNum,
+          discounts: 0,
+        };
+        obj.sumCost = Number(obj.sendCost) + Number(obj.insuranceCost) - Number(obj.discounts);
+        return obj;
 
-          },
-          {
-            label: '',
-            value: rawInfo.time
-          }
-        ]
-      }*/
+      },
       senderPickerTypeIsActiveInnAddSelector(){
         return this.senderPickerType == "activeInnAddSelector"
       },
@@ -251,7 +253,7 @@
     text-align: center;
   }
   .demo5-item {
-    width: 100px;
+    width: 90px;
     height: 32px;
     /*line-height: 26px;*/
     text-align: center;
