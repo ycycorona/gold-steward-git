@@ -2,7 +2,7 @@
   <div>
     <div class="tab-wrap flex-wrap weui-tabbar" style="z-index: 2">
       <div style="flex: 2;padding-right: 2px" class="flex-wrap" @click="moneyDetail=!moneyDetail">
-        <div style="flex: 2">总计 <span class="font-money">￥100.00</span></div>
+        <div style="flex: 2">总计 <span class="font-money">￥{{computedCost.orderPrice}}</span></div>
         <div style="flex: 1;text-align: right;font-size: 14px" >
           <span>明细</span>
           <x-icon v-if="moneyDetail" type="ios-arrow-up" size="17" style="vertical-align:sub;fill: white;"></x-icon>
@@ -16,15 +16,15 @@
       :show-mask="false"
       v-model="moneyDetail">
       <div class="money-detail-wrap">
-        <group :gutter="0">
-          <Cell title="行李寄送费用" >
-            <span>￥100</span>
+        <group :gutter="0" >
+          <Cell title="行李寄送费用">
+            <span>￥{{computedCost.luggageUnitPrice}} x {{computedCost.luggageNumber}}</span>
           </Cell>
-          <Cell title="保价金额" >
-            <span>￥100 x 2</span>
+          <Cell title="保价金额" v-if="computedCost.luggageNumber!=0">
+            <span>￥{{computedCost.insurancePrice}} x {{computedCost.luggageNumber}}</span>
           </Cell>
-          <Cell title="优惠名称">
-            <span class="red-font">-￥5x1</span>
+          <Cell title="优惠名称" v-if="computedCost.luggageNumber!=0">
+            <span class="red-font">-￥{{computedCost.preferentialPrice}}</span>
           </Cell>
         </group>
       </div>
@@ -44,8 +44,12 @@
     data () {
       return {
         moneyDetail: false,
-
         msg: 'Hello World!'
+      }
+    },
+    computed:{
+      computedCost(){
+        return this.$store.state.computedCost;
       }
     }
   }

@@ -91,6 +91,7 @@
           return this.$store.state.SelectStationAddress;
         },
         set(value){
+          console.log(1);
           this.$store.commit('toggleSelectStationAddress',value);
         }
       },

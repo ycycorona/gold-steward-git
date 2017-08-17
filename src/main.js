@@ -35,6 +35,21 @@ let store=new Vuex.Store({
       address2:"",
       time:""
     },
+    computedCost: {
+      customerMobile:"",
+      customerName:"",
+      flgInsurance:1,
+      insuranceAmount:500,
+      insuranceCost:0,
+      insurancePrice:0,
+      luggageNumber:0,
+      luggageUnitPrice:39,
+      needInvoice:1,
+      orderPrice:0,
+      preferentialPrice:0,
+      remark:"",
+      sendCost:0
+    }
   },
   getters:{
 
@@ -56,6 +71,9 @@ let store=new Vuex.Store({
     },
     inputStationInfo(state, newValue){
       state.stationInfo = newValue;
+    },
+    changeComputedCost(state, newValue){
+      state.computedCost = newValue;
     }
 
   },

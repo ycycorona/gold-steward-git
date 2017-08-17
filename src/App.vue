@@ -38,7 +38,7 @@
       TransferDom
     },
     created () {
-
+      console.log(this.$route.path);
 
     },
     data () {
@@ -51,7 +51,7 @@
     },
     computed: {
       hasHeader(){
-        return this.$route.path == '/index';
+        return this.$route.fullPath == '/index' || this.$route.fullPath == '/order-list';
       }
     },
     watch: {

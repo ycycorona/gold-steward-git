@@ -35,7 +35,7 @@
         <flexbox-item>
           <div class="sender-info-pre">
             <group :gutter="5">
-              <cell title="寄出地址/时间" value=""></cell>
+              <cell title="寄出地址/时间" ></cell>
               <cell>
                 <div slot="title" style="min-height:120px ">
                   <div>{{"" + senderInfo.address0 + senderInfo.address1 + senderInfo.address2}}</div>
@@ -48,7 +48,7 @@
         <flexbox-item>
           <div class="receiver-info-pre">
             <group :gutter="5">
-              <cell title="领回地址/时间" value=""></cell>
+              <cell title="领回地址/时间" ></cell>
               <cell>
                 <div slot="title" style="min-height:120px ">
                   {{"" + receiverInfo.address0 + receiverInfo.address1 + receiverInfo.address2}}
@@ -64,9 +64,11 @@
     <Group>
       <!--行李件数-->
       <Cell
-        title="行李件数  ￥39/件"
-        inline-desc="上限为XXXXX">
-        <InlineXNumber v-model="bagInfo.bagNum" style="display:block;" :min="0" width="50px" button-style="round"></InlineXNumber>
+        inline-desc="上限为10件">
+        <div slot="title">
+          行李件数<span style="padding-left: 1rem">￥39/件</span>
+        </div>
+        <InlineXNumber v-model="orderInfo.luggageNumber" style="display:block;" :min="0" width="50px" button-style="round"></InlineXNumber>
       </Cell>
       <!--行李保价-->
       <Cell
@@ -76,34 +78,43 @@
         <div slot="child" style="position: relative;width: 100%">
           <div style="padding-bottom: 10px">行李保价</div>
           <checker
-            v-model="bagInfo.insurance"
+            v-model="orderInfo.insurancePrice"
             default-item-class="demo5-item"
             selected-item-class="demo5-item-selected"
           >
             <checker-item :value="0">
               <div class="value-big">0元</div>
-              <div class="value-little">保价300元/件</div>
+              <div class="value-little">保价{{insuranceAmountMap['0']}}元/件</div>
             </checker-item>
             <checker-item :value="5">
               <div class="value-big">5元</div>
-              <div class="value-little">保价500元/件</div>
+              <div class="value-little">保价{{insuranceAmountMap['1']}}元/件</div>
             </checker-item>
             <checker-item :value="10">
               <div class="value-big">10元</div>
-              <div class="value-little">保价1000元/件</div>
+              <div class="value-little">保价{{insuranceAmountMap['2']}}元/件</div>
             </checker-item>
           </checker>
         </div>
       </Cell>
+      <x-switch title="是否需要发票" v-model="orderInfo.needInvoice"></x-switch>
+    </Group>
+    <Group>
       <!--联系方式-->
-      <XInput title="联系电话" v-model="bagInfo.phone" placeholder="请输入电话号码">
-        <!--<x-button slot="right" type="primary" mini></x-button>-->
+      <XInput title="联系人：" v-model="orderInfo.customerName" placeholder="请输入姓名"></XInput>
+<!--      <x-input title="验证码" class="weui-cell_vcode">
+        <img slot="right" class="weui-vcode-img" src="http://weui.github.io/weui/images/vcode.jpg">
+      </x-input>-->
+      <XInput title="联系电话：" v-model="orderInfo.customerMobile" placeholder="">
+        <x-button slot="right" type="primary" mini>验证手机享优惠</x-button>
       </XInput>
+<!--      <CellBox>
+        <x-button mini type="primary">primary</x-button>
+      </CellBox>-->
+      <x-textarea :max="200" placeholder="" title="备注：" v-model="orderInfo.remark"></x-textarea>
+    </Group>
+    <Group>
       <!--行李图片-->
-      <Cell
-      primary="content"
-      title="">
-      </Cell>
       <UpLoadFile></UpLoadFile>
     </Group>
     <!--<div style="background-color:cornflowerblue;height: 1000px;position: relative">
@@ -126,22 +137,27 @@
 </template>
 
 <script>
+  import BooleanToNum from '../util/numBoolean.js'
   import { TransferDom, XImg, Divider, Flexbox, FlexboxItem, CellFormPreview,
-    Group, Cell, Tabbar, TabbarItem, Popup, InlineXNumber, Checker, CheckerItem,
-    XInput,XButton} from 'vux'
+    Group, Cell, XTextarea,Tabbar, TabbarItem, Popup, InlineXNumber, Checker, CheckerItem,
+    XInput, XButton, XSwitch, CellBox } from 'vux'
   import SelectInnAddress from './TakeOrderChildCom/SelectInnAddress'
   import SelectStationAddress from './TakeOrderChildCom/SelectStationAddress'
   import SubmitOrderTab from './baseComponents/SubmitOrderTab'
   import UpLoadFile from './baseComponents/UpLoadFile'
+
   export default {
     name: 'TakeOdder',
     components: {
       XImg, Divider, SelectInnAddress, SelectStationAddress, Flexbox, FlexboxItem,
-      CellFormPreview, Group, Cell, Tabbar, TabbarItem, SubmitOrderTab, Popup, InlineXNumber,
-      Checker, CheckerItem, XInput, UpLoadFile, XButton
+      CellFormPreview, Group, Cell, XTextarea, Tabbar, TabbarItem, SubmitOrderTab, Popup, InlineXNumber,
+      Checker, CheckerItem, XInput, UpLoadFile, XButton, XSwitch, CellBox
     },
     directives: {
       TransferDom
+    },
+    created(){
+      console.log(this);
     },
     data () {
       return {
@@ -149,34 +165,28 @@
         senderPickerType:"activeInnAddSelector",
         receiverPickerType:"activeStationAddSelector",
         msg: 'Hello World!',
-        bagInfo:{
-          bagNum:0,
-          insurance:5,
-          phone:""
+        //保价对应的保额
+        insuranceAmountMap:{
+          '0' : 300,
+          '5' : 500,
+          '10' : 1000
         },
-        list: [{
-          label: 'Apple',
-          value: '3.29'
-        }, {
-          label: 'Banana',
-          value: '1.04'
-        }, {
-          label: 'Fish',
-          value: '8.00'
-        }]
+        orderInfo:{
+          luggageNumber: 0, //行李数量
+          luggageUnitPrice: 39, //行李单价
+          //flgInsurance: true, //是否保价
+          insurancePrice: 5, //保费
+          //insuranceAmount: 0, 保额
+          preferentialPrice: 0, //优惠价
+          //orderPrice: 0, 订单总价
+          customerName: "", //联系人姓名
+          customerMobile:"", //联系人电话
+          needInvoice: false, //是否需要发票
+          remark: "" //用户备注
+        },
       }
     },
     computed:{
-      costObj(){
-        let obj = {
-          sendCost: this.bagInfo.bagNum * 39,
-          insuranceCost: this.bagInfo.insurance * this.bagInfo.bagNum,
-          discounts: 0,
-        };
-        obj.sumCost = Number(obj.sendCost) + Number(obj.insuranceCost) - Number(obj.discounts);
-        return obj;
-
-      },
       senderPickerTypeIsActiveInnAddSelector(){
         return this.senderPickerType == "activeInnAddSelector"
       },
@@ -196,6 +206,11 @@
         }else{
           return this.$store.state.stationInfo;
         }
+      }
+    },
+    filters:{
+      numToBoolean(value){
+        return value === true ? 1 : 0;
       }
     },
     methods:{
@@ -218,8 +233,34 @@
       activeStationAddSelector(){
         this.$store.commit('toggleSelectStationAddress',!this.$store.state.SelectStationAddress);
       },
+      generateOrderForm(){
 
-
+      }
+    },
+    watch:{
+      /*深度监听data属性orderInfo的变动*/
+      orderInfo: {
+        handler: function(val){
+          let rawOrderInfo = this.orderInfo;
+          /*需要计算的属性*/
+          let obj = {
+            sendCost: this.orderInfo.luggageNumber * rawOrderInfo.luggageUnitPrice, //行李寄送费用
+            insuranceCost: this.orderInfo.insurancePrice * rawOrderInfo.luggageNumber, //保险费用
+            insuranceUnitPrice: this.insuranceAmountMap[rawOrderInfo.insurancePrice],
+            insuranceAmount: this.insuranceAmountMap[rawOrderInfo.insurancePrice] * rawOrderInfo.luggageNumber, //总保额
+            preferentialPrice: rawOrderInfo.preferentialPrice, //优惠费用
+            flgInsurance : BooleanToNum(rawOrderInfo.insurancePrice !== 0), //布尔值转成数字
+          };
+          /*直接从data拷贝过来的属性*/
+          for (let i in rawOrderInfo){
+            obj[i] = rawOrderInfo[i];
+          }
+          obj.needInvoice = BooleanToNum(rawOrderInfo.needInvoice);/*覆盖data直接拷贝过来的属性*/
+          obj.orderPrice = Number(obj.sendCost) + Number(obj.insuranceCost) - Number(obj.preferentialPrice); //总价
+          this.$store.commit('changeComputedCost',obj); //向vuex总栈提交变动
+        },
+        deep: true
+      }
     }
   }
 </script>
