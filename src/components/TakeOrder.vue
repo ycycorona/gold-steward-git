@@ -1,10 +1,10 @@
 <template>
   <div class="take-order">
     <div>
-      <XImg
+<!--      <XImg
         class="ximg-width-base"
         :src="'/static/imgs/demo.jpg'"
-      ></XImg>
+      ></XImg>-->
     </div>
     <div class="y-card flex-wrap">
       <div class="img-wrap" @click="activeSelector($event)" data-picker-role="sender">

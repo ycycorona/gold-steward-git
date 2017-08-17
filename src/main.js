@@ -7,8 +7,9 @@ import Vuex from 'vuex'
 import App from './App'
 import TakeOrder from './components/TakeOrder'
 import OrderList from './components/OrderList'
+import OrderDetail from './components/OrderDetail'
 import Hello from './components/Hello'
-import test from './components/test'
+/*import test from './components/test'*/
 import SubmitOrderTab from './components/baseComponents/SubmitOrderTab'
 import {AjaxPlugin, LoadingPlugin} from 'vux'
 
@@ -33,7 +34,7 @@ let store=new Vuex.Store({
       address1:"",
       address2:"",
       time:""
-    }
+    },
   },
   getters:{
 
@@ -78,6 +79,12 @@ const routes = [{
   {
     path: '/hello',
     component: Hello
+  },
+  {
+    path: '/order-detail',
+    components: {
+      mainPage:OrderDetail,
+    }
   }]
 
 const router = new VueRouter({

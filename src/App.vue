@@ -1,11 +1,19 @@
 <template>
   <div id="app">
     <!--顶部页面切换器-->
-    <TabHeader></TabHeader>
+    <keep-alive>
+      <TabHeader
+        v-if="hasHeader"
+      ></TabHeader>
+    </keep-alive>
     <!--页面路由载入-->
     <div style="">
       <keep-alive>
-        <router-view name="mainPage" class="router-view main-page" :style="{height: `${height}px`}"></router-view>
+        <router-view
+        name="mainPage"
+        class="router-view main-page "
+        :style="{height: `${height}px`}"
+        :class="{'offset-header':hasHeader}"></router-view>
       </keep-alive>
     </div>
     <!--页面固定底栏-->
@@ -31,16 +39,20 @@
     },
     created () {
 
+
     },
     data () {
       return {
         height: window.innerHeight - 40 - 50,
         msg: 'Hello World!',
-        direction: 'forward'
+        direction: 'forward',
+
       }
     },
     computed: {
-
+      hasHeader(){
+        return this.$route.path == '/index';
+      }
     },
     watch: {
 
@@ -69,10 +81,13 @@
     margin: 0;
   }
   /*切换路由动画*/
-.router-view.main-page{
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-top: 40px;
-  /*box-sizing: border-box;*/
-}
+  .router-view.main-page{
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+
+    /*box-sizing: border-box;*/
+  }
+  .offset-header{
+    padding-top: 40px;
+  }
 </style>
