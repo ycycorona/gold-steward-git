@@ -1,10 +1,10 @@
 <template>
   <div class="take-order">
     <div>
-<!--      <XImg
+      <XImg
         class="ximg-width-base"
-        :src="'/static/imgs/demo.jpg'"
-      ></XImg>-->
+        :src="'/static/imgs/demo1.jpg'"
+      ></XImg>
     </div>
     <div class="y-card flex-wrap">
       <div class="img-wrap" @click="activeSelector($event)" data-picker-role="sender">
@@ -37,7 +37,7 @@
             <group :gutter="5">
               <cell title="寄出地址/时间" ></cell>
               <cell>
-                <div slot="title" style="min-height:120px ">
+                <div slot="title" style="min-height:80px ">
                   <div>{{"" + senderInfo.address0 + senderInfo.address1 + senderInfo.address2}}</div>
                   <div>{{"" + senderInfo.time}}</div>
                 </div>
@@ -50,7 +50,7 @@
             <group :gutter="5">
               <cell title="领回地址/时间" ></cell>
               <cell>
-                <div slot="title" style="min-height:120px ">
+                <div slot="title" style="min-height:80px ">
                   {{"" + receiverInfo.address0 + receiverInfo.address1 + receiverInfo.address2}}
                   <div>{{"" + receiverInfo.time}}</div>
                 </div>

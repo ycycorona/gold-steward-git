@@ -9,7 +9,7 @@
           <x-icon v-if="!moneyDetail" type="ios-arrow-down" size="17" style="vertical-align:sub;fill: white;"></x-icon>
         </div>
       </div>
-      <div class="flex-submit">提交</div>
+      <div class="flex-submit" @click="submitOrderForm">提交</div>
     </div>
     <popup
       :popup-style="{bottom: '50px',zIndex: 1}"
@@ -29,17 +29,23 @@
         </group>
       </div>
     </popup>
+    <!--<div v-transfer-dom v-model="">
+      <x-dialog>asdfasdfasdf</x-dialog>
+    </div>-->
   </div>
 </template>
 
 <script>
-  import { Group, Cell, Popup} from 'vux'
+  import { Group, Cell, Popup, TransferDom, XDialog} from 'vux'
   export default {
     name: 'SubmitOrderTab',
     components: {
       Group,
       Cell,
-      Popup,
+      Popup, TransferDom, XDialog
+    },
+    created(){
+      /*this.submitOrderForm();*/
     },
     data () {
       return {
@@ -50,6 +56,11 @@
     computed:{
       computedCost(){
         return this.$store.state.computedCost;
+      }
+    },
+    methods:{
+      submitOrderForm(){
+        console.log(JSON.stringify(this.$store.state));
       }
     }
   }

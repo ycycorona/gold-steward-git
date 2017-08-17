@@ -51,7 +51,7 @@
     },
     computed: {
       hasHeader(){
-        return this.$route.fullPath == '/index' || this.$route.fullPath == '/order-list';
+        return this.$route.path == '/index' || this.$route.path == '/order-list';
       }
     },
     watch: {
