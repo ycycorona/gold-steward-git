@@ -38,7 +38,7 @@ let store=new Vuex.Store({
     computedCost: {
       customerMobile:"",
       customerName:"",
-      flgInsurance:1,
+      //flgInsurance:1,
       insuranceAmount:500,
       insuranceCost:0,
       insurancePrice:0,

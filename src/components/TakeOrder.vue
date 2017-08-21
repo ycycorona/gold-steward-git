@@ -249,7 +249,7 @@
             insuranceUnitPrice: this.insuranceAmountMap[rawOrderInfo.insurancePrice],
             insuranceAmount: this.insuranceAmountMap[rawOrderInfo.insurancePrice] * rawOrderInfo.luggageNumber, //总保额
             preferentialPrice: rawOrderInfo.preferentialPrice, //优惠费用
-            flgInsurance : BooleanToNum(rawOrderInfo.insurancePrice !== 0), //布尔值转成数字
+            // flgInsurance : BooleanToNum(rawOrderInfo.insurancePrice !== 0), 是否保价，布尔值转成数字
           };
           /*直接从data拷贝过来的属性*/
           for (let i in rawOrderInfo){

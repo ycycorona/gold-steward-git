@@ -3,7 +3,7 @@
     <group>
       <div class="group-padding">
         <div class="big-bold-font">订单待支付</div>
-        <div class="little-grey-font margin-bottom">为不影响您的行程，青核对订单并及时支付</div>
+        <div class="little-grey-font margin-bottom">为不影响您的行程，请核对订单并及时支付</div>
         <flexbox >
           <flexbox-item>
             <x-button
@@ -21,23 +21,45 @@
 
     </group>
     <group>
-      <cell title="title" value="value"></cell>
+      <cell title="订单编号" value="1234"></cell>
+      <cell title="客户姓名" value="ycy"></cell>
+      <cell title="手机号码" value="15689951023"></cell>
+    </group>
+    <group>
+      <cell title="行李件数" value="1234"></cell>
+      <cell title="寄送总额" value="ycy"></cell>
+    </group>
+    <group>
+      <cell title="寄件时间" value="08月17日 14:00 "></cell>
+      <cell title="寄件位置" value="青岛市 市北区 XXXX酒店"></cell>
+    </group>
+    <group>
+      <cell title="取件时间" value="08月18日 14:00 "></cell>
+      <cell title="取件位置" value="青岛市 市北区 流亭机场"></cell>
+    </group>
+    <!--点评-->
+    <group>
+      <cell title="change color">
+        <rater v-model="rate" slot="value" :max="5" active-color="#04BE02"></rater>
+      </cell>
+      <x-textarea title="点评：" v-model="commentText"></x-textarea>
     </group>
   </div>
 </template>
 
 <script>
-  import { Group, Cell, XButton, Flexbox, FlexboxItem } from 'vux'
+  import { Group, Cell, XButton, Flexbox, FlexboxItem, Rater, XTextarea } from 'vux'
 
   export default {
     name: 'OrderDetail',
     components: {
       Group,
-      Cell,Flexbox, FlexboxItem, XButton
+      Cell,Flexbox, FlexboxItem, XButton, Rater, XTextarea
     },
     data () {
       return {
-
+        commentText: "",
+        rate: 0,
         msg: 'Hello World!'
       }
     }

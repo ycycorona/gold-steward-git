@@ -12,7 +12,7 @@
         <router-view
         name="mainPage"
         class="router-view main-page "
-        :style="{height: `${height}px`}"
+        :style="{height: height}"
         :class="{'offset-header':hasHeader}"></router-view>
       </keep-alive>
     </div>
@@ -43,15 +43,25 @@
     },
     data () {
       return {
-        height: window.innerHeight - 40 - 50,
+        /*height: window.innerHeight - 40 - 50,*/
         msg: 'Hello World!',
         direction: 'forward',
-
       }
     },
     computed: {
-      hasHeader(){
-        return this.$route.path == '/index' || this.$route.path == '/order-list';
+      hasHeader() {
+        console.log(this.$route);
+        return this.$route.matched[0].path == '/index' || this.$route.matched[0].path == '/order-list';
+      },
+      height() {
+        if (this.$route.matched[0].path == '/index') {
+          return window.innerHeight - 40 - 50 + 'px';
+        } else if (this.$route.matched[0].path == '/order-list') {
+          return window.innerHeight - 40  + 'px';
+        } else if (this.$route.matched[0].path == '/order-detail') {
+          return "auto";
+        }
+
       }
     },
     watch: {
