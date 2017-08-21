@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import FastClick from 'fastclick'
 import Vuex from 'vuex'
-import App from './order_list.vue'
+import App from './take_order.vue'
 import {AjaxPlugin, LoadingPlugin} from 'vux'
 
 Vue.use(LoadingPlugin)

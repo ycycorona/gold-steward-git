@@ -15,8 +15,8 @@
 
 <script>
   import { TransferDom } from 'vux'
-  import TabHeader from './components/baseComponents/TabHeader'
-  import OrderList from './components/OrderList'
+  import TabHeader from '../../components/baseComponents/TabHeader'
+  import OrderList from '../../components/OrderList'
   export default {
     name: 'App',
     components: {
@@ -48,7 +48,7 @@
 
 <style lang="less">
   @import '~vux/src/styles/reset.less';
-  @import 'style/base.less';
+  @import '../../style/base.less';
   body {
     background-color: #fbf9fe;
   }

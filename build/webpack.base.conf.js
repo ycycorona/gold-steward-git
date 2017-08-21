@@ -6,17 +6,19 @@ const vuxLoader = require('vux-loader')
 
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
-
+//引入多页面支持
+var multipageHelper = require('./multipage-helper')
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
 let webpackConfig = {
-  entry: {
-    /*app: './src/main.js',*/
+/*  entry: {
+    /!*app: './src/main.js',*!/
     take_order_entry: './src/take_order_entry.js',
     order_list_entry: './src/order_list_entry.js'
-  },
+  },*/
+  entry: multipageHelper.getEntries(), //设置多入口集合
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',

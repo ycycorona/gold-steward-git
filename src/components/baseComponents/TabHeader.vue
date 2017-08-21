@@ -45,14 +45,14 @@
       }
     },
     watch: {
-      currPage (val) {
-        /*监听currPage变动，载入新页面*/
+/*      currPage (val) {
+        /!*监听currPage变动，载入新页面*!/
         if (val === 0) {
-          window.location.href = "/take-order"
+          window.location.href = "/take_order.html"
         } else if (val === 1) {
-          window.location.href = "/order-list"
+          window.location.href = "/order_list.html"
         }
-      }
+      }*/
     }
   }
 </script>
