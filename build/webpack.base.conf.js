@@ -13,7 +13,9 @@ function resolve (dir) {
 
 let webpackConfig = {
   entry: {
-    app: './src/main.js'
+    /*app: './src/main.js',*/
+    take_order_entry: './src/take_order_entry.js',
+    order_list_entry: './src/order_list_entry.js'
   },
   output: {
     path: config.build.assetsRoot,
