@@ -30,9 +30,9 @@
         msg: 'Hello World!',
         maxImgsNum:3,
         images:[
-          {url:"/static/imgs/upload/878619173.jpeg"},
-          {url:"/static/imgs/upload/884334763.jpeg"},
-          {url:"/static/imgs/upload/1491322234.jpeg"},
+          {url:"/mobile_src/imgs/upload/878619173.jpeg"},
+          {url:"/mobile_src/imgs/upload/884334763.jpeg"},
+          {url:"/mobile_src/imgs/upload/1491322234.jpeg"},
         ],
         uploadUrl:"www.baidu.com"
       }

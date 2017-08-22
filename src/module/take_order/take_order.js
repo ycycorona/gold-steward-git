@@ -5,7 +5,13 @@ import FastClick from 'fastclick'
 import Vuex from 'vuex'
 import App from './take_order.vue'
 import {AjaxPlugin, LoadingPlugin} from 'vux'
-
+try {
+  global.basePath = basePath    
+} catch (e) {
+  console.log('catch' + e); 
+  global.basePath = '';
+  console.log(global.basePath);  
+}
 Vue.use(LoadingPlugin)
 Vue.use(AjaxPlugin)
 

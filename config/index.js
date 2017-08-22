@@ -6,8 +6,8 @@ module.exports = {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsSubDirectory: 'mobile_src',
+    assetsPublicPath: '<%=basePath %>',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -25,7 +25,7 @@ module.exports = {
     env: require('./dev.env'),
     port: 8888,
     autoOpenBrowser: false,
-    assetsSubDirectory: 'static',
+    assetsSubDirectory: 'mobile_src',
     assetsPublicPath: '/',
     proxyTable: {},
     // CSS Sourcemaps off by default because relative paths are "buggy"

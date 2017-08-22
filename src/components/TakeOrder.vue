@@ -3,12 +3,12 @@
     <div>
       <XImg
         class="ximg-width-base"
-        :src="'/static/imgs/demo1.jpg'"
+        :src="basePath + '/mobile_src/imgs/demo1.jpg'"
       ></XImg>
     </div>
     <div class="y-card flex-wrap">
       <div class="img-wrap" @click="activeSelector($event)" data-picker-role="sender">
-        <img src="/static/imgs/sender.png" width="50" alt="寄出">
+        <img :src="basePath + '/mobile_src/imgs/sender.png'" width="50" alt="寄出">
         <div>
           <x-icon v-if="!senderPickerTypeIsActiveInnAddSelector" type="android-train" size="25"></x-icon>
           <x-icon v-if="!senderPickerTypeIsActiveInnAddSelector" type="android-plane" size="25"></x-icon>
@@ -21,7 +21,7 @@
         </Divider>
       </div>
       <div class="img-wrap" @click="activeSelector($event)" data-picker-role="receiver">
-        <img src="/static/imgs/receiver.png" width="50" alt="领回">
+        <img :src="basePath + '/mobile_src/imgs/receiver.png'" width="50" alt="领回">
         <div >
           <x-icon v-if="!receiverPickerTypeTypeIsActiveInnAddSelector" type="android-train" size="25"></x-icon>
           <x-icon v-if="!receiverPickerTypeTypeIsActiveInnAddSelector" type="android-plane" size="25"></x-icon>
@@ -145,7 +145,14 @@
   import SelectStationAddress from './TakeOrderChildCom/SelectStationAddress'
   import SubmitOrderTab from './baseComponents/SubmitOrderTab'
   import UpLoadFile from './baseComponents/UpLoadFile'
+  // if (typeof basePath != undefined) {
+  //   console.log(basePath);
+  // } else {
+  //   console.log("未定义");
+  // }
 
+ 
+  // let basePath
   export default {
     name: 'TakeOdder',
     components: {
@@ -161,6 +168,7 @@
     },
     data () {
       return {
+        basePath: global.basePath,
         show1:true,
         senderPickerType:"activeInnAddSelector",
         receiverPickerType:"activeStationAddSelector",
