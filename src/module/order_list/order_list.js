@@ -5,7 +5,56 @@ import FastClick from 'fastclick'
 import Vuex from 'vuex'
 import App from './order_list.vue'
 import {AjaxPlugin, LoadingPlugin} from 'vux'
-
+/*使用jsp时，需要指定basepath*/
+try {
+    global.basePath = basePath;
+    global.orderList = luggageList;
+    console.log('try,项目的basePath为：' + global.basePath + '此时应为正式环境');
+} catch (e) {
+    global.basePath = '';
+    global.orderList = [
+        {
+            "id": 354,
+            "openId": "oWwFQw-FqknWMh8BEZwnUfzd5HGY",
+            "orderNo": "2017080161",
+            "sendCity": "青岛市",
+            "sendAddress": "市南区",
+            "sendTime": "2017-08-23",
+            "takeCity": "青岛市",
+            "takeAddress": "飞机场-流亭机场",
+            "takeTime": "2017-08-23",
+            "luggageNumber": 1,
+            "luggageUnitPrice": 39.0,
+            "insurancePrice": 5.0,
+            "insuranceAmount": 500.0,
+            "preferentialPrice": 0.0,
+            "orderPrice": 44.0,
+            "remark": "sdsdsd",
+            "needInvoice": 0,
+            "customerName": "ycy",
+            "customerMobile": "15655555",
+            "orderStatus": 0,
+            "orderCreateTime": "2017-08-23"
+        },
+        {
+            "id": 382,
+            "openId": "oWwFQw-FqknWMh8BEZwnUfzd5HGY",
+            "orderNo": "2017080189",
+            "orderPrice": 99.0,
+            "orderStatus": 0,
+            "orderCreateTime": "2017-08-23"
+        },
+        {
+            "id": 383,
+            "openId": "oWwFQw-FqknWMh8BEZwnUfzd5HGY",
+            "orderNo": "2017080190",
+            "orderPrice": 99.0,
+            "orderStatus": 0,
+            "orderCreateTime": "2017-08-23"
+        }
+    ];
+    console.log('catch,项目的basePath为：' + global.basePath + '此时应为前端开发环境');
+}
 Vue.use(LoadingPlugin)
 Vue.use(AjaxPlugin)
 

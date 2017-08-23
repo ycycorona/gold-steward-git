@@ -33,7 +33,6 @@
 </template>
 
 <script>
-
     /*正式用 URL列表*/
     let URLLists = {
         /*创建订单*/
@@ -42,7 +41,7 @@
     /*URL列表 开发用*/
     URLLists = {
         /*创建订单*/
-        createOrder: 'http://localhost:8080/wxmp/luggage/wx/createOrder.do'
+        createOrder: 'http://172.16.12.39:8080/wxmp/luggage/wx/createOrder.do'
     };
     import {Group, Cell, Popup, TransferDom, XDialog} from 'vux'
     import dataSerialize from "../../util/ajaxDataSerialize.js"
@@ -101,7 +100,8 @@
                 };
                 this.$store.commit('changeSubmitForm', submitForm);
             },
-            /*提交表单*/
+            /**
+             * @desc 提交表单 包括图片以及文字表单*/
             createOrder() {
                 /*生成vuex里的submitForm*/
                 this.submitOrderForm();
@@ -120,8 +120,7 @@
                         console.log('获取数据时与后台通讯失败', code);
                     });*/
                 /*上传图片以及表单信息*/
-                console.log(picFormData.getAll(0));
-                this.$http.post(URLLists.createOrder + '?' + postData, picFormData)
+                this.$http.post(URLLists.createOrder + '?' + postData, picFormData, {emulateJSON: true})
                     .then((res) => {
                         console.log(res);
                     })

@@ -113,7 +113,7 @@
                     return
                 }
                 let fileObj = {
-                    index: this.images.length,
+                    index: 'imgs[' + this.images.length + ']',
                     name: this.$refs.input.value,
                     file: this.$refs.input.files[0],
                 };
@@ -124,7 +124,8 @@
                     console.log('开始上传到vuex');
                     this.$store.commit('pushPic', fileObj);
                     this.$refs.input.value = '';
-                    this.images.push(fileObj.name);
+                    /*this.images.push(fileObj.name);*/
+                    this.showSmallPreview(fileObj.file)
 /*                    axios.post(this.uploadUrl, formData)
                         .then((response) => {
                             if (this.$vux && this.$vux.loading) {
@@ -142,6 +143,23 @@
                 } else {
                     this.$emit('upload-image', formData)
                 }
+            },
+            /**
+             * @desc 把前端本地图片资源转变成url字符串
+             * @param file 图片对象
+             *
+             **/
+            showSmallPreview (file){
+                let oFile = file;
+                let oFReader = new FileReader();
+                let rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+                if (!rFilter.test(oFile.type)) { return; }
+                oFReader.readAsDataURL(oFile);
+                oFReader.onload = (oFREvent) => {
+                    this.images.push({
+                        url: oFREvent.target.result
+                    });
+                };
             }
         },
         computed: {

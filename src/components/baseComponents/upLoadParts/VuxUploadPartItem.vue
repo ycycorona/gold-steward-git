@@ -1,5 +1,6 @@
 <template>
   <li class="weui-uploader__file" :style="style">
+
   </li>
 </template>
 
