@@ -1,12 +1,16 @@
 <template>
     <div>
         <div style="margin-top: 10px"></div>
-        <card v-for="(item, index) in orderList" :key="index">
+        <card v-for="(item, index) in orderList" :key="index" @click.native="toOrderDetail">
             <div slot="header" class="item-header flex-wrap">
                 <div>订单号：{{item.orderNo}}</div>
                 <div class="text-right bold-text">{{orderStatusList[item.orderStatus]}}</div>
             </div>
-            <div slot="content" class="card-padding">custom content</div>
+            <div slot="content" class="card-padding">
+                <div>寄出地：{{item.sendCity + item.sendAddress}}</div>
+                <div>取回地：{{item.takeCity + item.takeAddress}}</div>
+                <div>总价/件数：{{item.orderPrice + '/' + item.luggageNumber}}</div>
+            </div>
             <div slot="footer">
             </div>
         </card>
@@ -29,7 +33,14 @@
             }
         },
         methods: {
-
+            /**
+             * @desc 根据订单号，跳转到订单详情页面
+             * @param OrderListindex
+             */
+            toOrderDetail () {
+                /*获取订单号*/
+                console.log("asd");
+            }
         }
 
     }
