@@ -23,6 +23,7 @@ let store=new Vuex.Store({
     currPage:0, //当前的Tab页
     SelectInnAddress:false,
     SelectStationAddress:false,
+    senderPickerType:'activeInnAddSelector',
     innInfo:{
       address0:"",
       address1:"",
@@ -49,6 +50,9 @@ let store=new Vuex.Store({
       preferentialPrice:0,
       remark:"",
       sendCost:0
+    },
+    submitForm:{
+
     }
   },
   getters:{
@@ -74,7 +78,11 @@ let store=new Vuex.Store({
     },
     changeComputedCost(state, newValue){
       state.computedCost = newValue;
+    },
+    changeSenderPickerType(state, newValue) {
+      state.senderPickerType = newValue;
     }
+
 
   },
   actions:{

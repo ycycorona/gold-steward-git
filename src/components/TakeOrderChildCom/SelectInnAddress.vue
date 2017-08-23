@@ -47,7 +47,7 @@
           <datetime-view
           v-model="innInfo.time"
           ref="datetime1"
-          format="YYYY-MM-DD HH:mm"></datetime-view>
+          format="YYYY-MM-DD HH:mm:ss"></datetime-view>
         </group>
       </div>
     </popup>
@@ -69,7 +69,7 @@
   /*选择器数据初始化*/
   import {QDdistrictList, QDdistrictListMap} from '../../data/addressData.js'
   /*获得当前日期*/
-  let nowDate = dateFormat(new Date(), 'YYYY-MM-DD HH:mm');
+  let nowDate = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss');
   export default {
     name: 'SelectInnAddress',
     components: {
