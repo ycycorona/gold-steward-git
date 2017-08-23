@@ -53,7 +53,8 @@ let store = new Vuex.Store({
         },
         submitForm:{
 
-        }
+        },
+        picContainer: []
     },
     getters: {},
     mutations: {
@@ -82,6 +83,9 @@ let store = new Vuex.Store({
         },
         changeSubmitForm(state, newValue) {
             state.submitForm = newValue;
+        },
+        pushPic(state,newPicObj) {
+            state.picContainer.push(newPicObj);
         }
     },
     actions: {}

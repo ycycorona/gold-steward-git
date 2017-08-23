@@ -7,7 +7,6 @@
       :class="{'offset-header':false}"
     ></OrderDetail>
     <!--页面固定底栏-->
-
   </div>
 </template>
 

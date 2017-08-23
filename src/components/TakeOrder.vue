@@ -132,8 +132,6 @@
         <div v-transfer-dom>
             <SelectStationAddress></SelectStationAddress>
         </div>
-
-
     </div>
 </template>
 
@@ -148,8 +146,6 @@
     import SelectStationAddress from './TakeOrderChildCom/SelectStationAddress'
     import SubmitOrderTab from './baseComponents/SubmitOrderTab'
     import UpLoadFile from './baseComponents/UpLoadFile'
-
-
     export default {
         name: 'TakeOdder',
         components: {

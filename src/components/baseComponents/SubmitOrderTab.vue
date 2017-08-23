@@ -103,15 +103,31 @@
             },
             /*提交表单*/
             createOrder() {
+                /*生成vuex里的submitForm*/
                 this.submitOrderForm();
-                let postData = dataSerialize(this.$store.state.submitForm);
-                this.$http.post(URLLists.createOrder,postData,{emulateJSON: true})
-                .then((res)=>{
-                   console.log(res);
-                })
-                .catch((code) => {
-                    console.log('获取数据时与后台通讯失败',code);
+                /*推入要上传的图片*/
+                let picFormData =  new FormData();
+                this.$store.state.picContainer.forEach(function (val, index, arr) {
+                    picFormData.append(val.index, val.file);
                 });
+                /*推入要提交的表单数据*/
+                let postData = dataSerialize(this.$store.state.submitForm);
+/*                this.$http.post(URLLists.createOrder, postData, {emulateJSON: true})
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .catch((code) => {
+                        console.log('获取数据时与后台通讯失败', code);
+                    });*/
+                /*上传图片以及表单信息*/
+                console.log(picFormData.getAll(0));
+                this.$http.post(URLLists.createOrder + '?' + postData, picFormData)
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .catch((code) => {
+                        console.log('获取数据时与后台通讯失败', code);
+                    });
             }
 
         }
