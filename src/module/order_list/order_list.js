@@ -5,12 +5,31 @@ import FastClick from 'fastclick'
 import Vuex from 'vuex'
 import App from './order_list.vue'
 import {AjaxPlugin, LoadingPlugin} from 'vux'
-/*使用jsp时，需要指定basepath*/
+/*用tyr-catch来测试处于正式还是开发环境，进行不同的变量配置，使用jsp时，需要指定basepath*/
 try {
     global.basePath = basePath;
     global.orderList = luggageList;
+    /*正式用 URL列表*/
+    global.URLLists = {
+        /*创建订单*/
+        createOrder: global.basePath + '/luggage/wx/createOrder.do',
+        /*订单列表*/
+        OrderList: global.basePath + '/luggage/wx/toMyOrderList.do?code=1',
+        /*订单详情*/
+        OrderDetail: global.basePath + '/luggage/wx/toOrderDetailPage.do',
+    };
     console.log('try,项目的basePath为：' + global.basePath + '此时应为正式环境');
 } catch (e) {
+    /*URL列表 开发用*/
+    global.URLLists = {
+        /*创建订单*/
+        createOrder: 'http://172.16.12.39:8080/wxmp/luggage/wx/createOrder.do',
+        /*订单列表*/
+        OrderList: 'http://172.16.12.39:8080/wxmp/luggage/wx/toMyOrderList.do?code=1',
+        /*订单详情*/
+        /*OrderDetail: 'http://172.16.12.39:8080/wxmp/luggage/wx/toOrderDetailPage.do',*/
+        OrderDetail: '/order_detail.html',
+    };
     global.basePath = '';
     global.orderList = [
         {

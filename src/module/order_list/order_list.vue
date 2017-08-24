@@ -31,6 +31,7 @@
     },
     data () {
       return {
+        URLLists: global.URLLists,
         /*height: window.innerHeight - 40 - 50,*/
         height: window.innerHeight - 40 + 'px',
         msg: 'Hello World!',

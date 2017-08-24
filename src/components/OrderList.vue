@@ -1,7 +1,7 @@
 <template>
     <div>
         <div style="margin-top: 10px"></div>
-        <card v-for="(item, index) in orderList" :key="index" @click.native="toOrderDetail">
+        <card v-for="(item, index) in orderList" :key="index" @click.native="toOrderDetail(item.orderNo,$event)">
             <div slot="header" class="item-header flex-wrap">
                 <div>订单号：{{item.orderNo}}</div>
                 <div class="text-right bold-text">{{orderStatusList[item.orderStatus]}}</div>
@@ -37,9 +37,12 @@
              * @desc 根据订单号，跳转到订单详情页面
              * @param OrderListindex
              */
-            toOrderDetail () {
+            toOrderDetail (orderNo) {
                 /*获取订单号*/
-                console.log("asd");
+                console.log(orderNo);
+                window.location.href = global.URLLists.OrderDetail + '?code=1&orderNo=' + orderNo
+                /*正是环境*/
+                window.location.href = global.URLLists.OrderDetail + '?code=1&orderNo=' + orderNo
             }
         }
 
