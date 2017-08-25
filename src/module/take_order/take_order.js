@@ -5,14 +5,10 @@ import FastClick from 'fastclick'
 import Vuex from 'vuex'
 import App from './take_order.vue'
 import { AjaxPlugin, LoadingPlugin } from 'vux'
-/*使用jsp时，需要指定basepath*/
-try {
-    global.basePath = basePath;
-    console.log('try,项目的basePath为：' + global.basePath + '此时应为正式环境');
-} catch (e) {
-    global.basePath = '';
-    console.log('catch,项目的basePath为：' + global.basePath + '此时应为前端开发环境');
-}
+import { setVarForJsp } from '../../util/setVarForJsp.js'
+
+/*使用jsp时，需要指定basepath {name:'para1',val:123}*/
+setVarForJsp();
 Vue.use(LoadingPlugin)
 Vue.use(AjaxPlugin)
 
@@ -88,8 +84,7 @@ let store = new Vuex.Store({
             state.picContainer.push(newPicObj);
         }
     },
-    actions: {}
-})
+});
 
 FastClick.attach(document.body)
 

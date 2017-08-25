@@ -5,74 +5,14 @@ import FastClick from 'fastclick'
 import Vuex from 'vuex'
 import App from './order_list.vue'
 import {AjaxPlugin, LoadingPlugin} from 'vux'
+import { setVarForJsp } from '../../util/setVarForJsp.js'
+/*使用jsp时，需要指定basepath {name:'para1',val:123}*/
+setVarForJsp();
 /*用tyr-catch来测试处于正式还是开发环境，进行不同的变量配置，使用jsp时，需要指定basepath*/
 try {
-    global.basePath = basePath;
     global.orderList = luggageList;
-    /*正式用 URL列表*/
-    global.URLLists = {
-        /*创建订单*/
-        createOrder: global.basePath + '/luggage/wx/createOrder.do',
-        /*订单列表*/
-        OrderList: global.basePath + '/luggage/wx/toMyOrderList.do?code=1',
-        /*订单详情*/
-        OrderDetail: global.basePath + '/luggage/wx/toOrderDetailPage.do',
-    };
-    console.log('try,项目的basePath为：' + global.basePath + '此时应为正式环境');
 } catch (e) {
-    /*URL列表 开发用*/
-    global.URLLists = {
-        /*创建订单*/
-        createOrder: 'http://172.16.12.39:8080/wxmp/luggage/wx/createOrder.do',
-        /*订单列表*/
-        OrderList: 'http://172.16.12.39:8080/wxmp/luggage/wx/toMyOrderList.do?code=1',
-        /*订单详情*/
-        /*OrderDetail: 'http://172.16.12.39:8080/wxmp/luggage/wx/toOrderDetailPage.do',*/
-        OrderDetail: '/order_detail.html',
-    };
-    global.basePath = '';
-    global.orderList = [
-        {
-            "id": 354,
-            "openId": "oWwFQw-FqknWMh8BEZwnUfzd5HGY",
-            "orderNo": "2017080161",
-            "sendCity": "青岛市",
-            "sendAddress": "市南区",
-            "sendTime": "2017-08-23",
-            "takeCity": "青岛市",
-            "takeAddress": "飞机场-流亭机场",
-            "takeTime": "2017-08-23",
-            "luggageNumber": 1,
-            "luggageUnitPrice": 39.0,
-            "insurancePrice": 5.0,
-            "insuranceAmount": 500.0,
-            "preferentialPrice": 0.0,
-            "orderPrice": 44.0,
-            "remark": "sdsdsd",
-            "needInvoice": 0,
-            "customerName": "ycy",
-            "customerMobile": "15655555",
-            "orderStatus": 0,
-            "orderCreateTime": "2017-08-23"
-        },
-        {
-            "id": 382,
-            "openId": "oWwFQw-FqknWMh8BEZwnUfzd5HGY",
-            "orderNo": "2017080189",
-            "orderPrice": 99.0,
-            "orderStatus": 0,
-            "orderCreateTime": "2017-08-23"
-        },
-        {
-            "id": 383,
-            "openId": "oWwFQw-FqknWMh8BEZwnUfzd5HGY",
-            "orderNo": "2017080190",
-            "orderPrice": 99.0,
-            "orderStatus": 0,
-            "orderCreateTime": "2017-08-23"
-        }
-    ];
-    console.log('catch,项目的basePath为：' + global.basePath + '此时应为前端开发环境');
+    global.orderList = [{"id":354,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080161","sendCity":"青岛市","sendAddress":"市南区","sendTime":"2017-08-23","takeCity":"青岛市","takeAddress":"飞机场-流亭机场","takeTime":"2017-08-23","luggageNumber":1,"luggageUnitPrice":39.0,"insurancePrice":5.0,"insuranceAmount":500.0,"preferentialPrice":0.0,"orderPrice":44.0,"remark":"sdsdsd","needInvoice":0,"customerName":"ycy","customerMobile":"15655555","orderStatus":0,"orderCreateTime":"2017-08-23"},{"id":382,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080189","orderPrice":99.0,"orderStatus":0,"orderCreateTime":"2017-08-23"},{"id":383,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080190","orderPrice":99.0,"orderStatus":0,"orderCreateTime":"2017-08-23"},{"id":417,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080224","sendCity":"","sendAddress":"","takeCity":"","takeAddress":"","luggageNumber":0,"luggageUnitPrice":39.0,"insurancePrice":0.0,"insuranceAmount":500.0,"preferentialPrice":0.0,"orderPrice":0.0,"remark":"","needInvoice":1,"customerName":"","customerMobile":"","orderStatus":0,"orderCreateTime":"2017-08-25"},{"id":418,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080225","sendCity":"","sendAddress":"","takeCity":"","takeAddress":"","luggageNumber":0,"luggageUnitPrice":39.0,"luggagePic":"884d91a3-3f80-4295-a928-ec2bb38fb49e","insurancePrice":0.0,"insuranceAmount":500.0,"preferentialPrice":0.0,"orderPrice":0.0,"remark":"","needInvoice":1,"customerName":"","customerMobile":"","orderStatus":0,"orderCreateTime":"2017-08-25"},{"id":427,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080234","sendCity":"青岛市","sendAddress":"市南区","sendTime":"2017-08-25","takeCity":"青岛市","takeAddress":"飞机场-流亭机场","takeTime":"2017-08-25","luggageNumber":1,"luggageUnitPrice":39.0,"luggagePic":"91066a93-4d62-42eb-a8e7-27a8396dccad","insurancePrice":5.0,"insuranceAmount":500.0,"preferentialPrice":0.0,"orderPrice":44.0,"remark":"阿斯蒂芬阿斯蒂芬","needInvoice":0,"customerName":"呵呵哒","customerMobile":"545451","orderStatus":0,"orderCreateTime":"2017-08-25"}];
 }
 Vue.use(LoadingPlugin)
 Vue.use(AjaxPlugin)

@@ -73,10 +73,8 @@
     .router-view.main-page {
         overflow: auto;
         -webkit-overflow-scrolling: touch;
-
         /*box-sizing: border-box;*/
     }
-
     .offset-header {
         padding-top: 40px;
     }

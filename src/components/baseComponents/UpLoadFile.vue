@@ -5,7 +5,7 @@
             :images="images"
             :handle-click="false"
             :show-header="true"
-            :readonly="true"
+            :readonly="false"
             :upload-url="uploadUrl"
             size="small"
             :autoUpload="true"

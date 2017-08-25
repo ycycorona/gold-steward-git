@@ -2,22 +2,35 @@
     <div>
         <group>
             <div class="group-padding">
-                <div class="big-bold-font">订单待支付</div>
-                <div class="little-grey-font margin-bottom">为不影响您的行程，请核对订单并及时支付</div>
-                <flexbox>
-                    <flexbox-item>
-                        <x-button
-                            type="default"
-                            action-type="button">取消订单
-                        </x-button>
-                    </flexbox-item>
-                    <flexbox-item>
-                        <x-button
-                            type="default">
-                            去付款
-                        </x-button>
-                    </flexbox-item>
-                </flexbox>
+                <!--订单未支付的内容-->
+                <template v-if="luggage.orderStatus == 0">
+                    <div class="big-bold-font">订单待支付</div>
+                    <div class="little-grey-font margin-bottom">为不影响您的行程，请核对订单并及时支付</div>
+                    <flexbox>
+                        <flexbox-item>
+                            <x-button
+                                type="default"
+                                action-type="button">取消订单
+                            </x-button>
+                        </flexbox-item>
+                        <flexbox-item>
+                            <x-button
+                                type="default">
+                                去付款
+                            </x-button>
+                        </flexbox-item>
+                    </flexbox>
+                </template>
+                <!--订单已支付-->
+                <template v-if="luggage.orderStatus == 1">
+                    <div class="big-bold-font">订单已支付</div>
+                    <div class="little-grey-font margin-bottom">您已经付款，订单正在进行中</div>
+                </template>
+                <!--订单已完成-->
+                <template v-if="luggage.orderStatus == 2">
+                    <div class="big-bold-font">订单已完成</div>
+                    <div class="little-grey-font margin-bottom">订单已经完成，合作愉快！</div>
+                </template>
             </div>
 
         </group>
@@ -79,11 +92,11 @@
             </div>
         </group>
         <!--图片预览-->
-        <group>
+        <group v-if="this.$store.state.imgsUrl.length != 0">
             <ShowUploadedPics></ShowUploadedPics>
         </group>
         <!--点评-->
-        <group>
+        <group v-if="luggage.orderStatus == 0">
             <cell title="评分">
                 <rater v-model="rate" slot="value" :max="5" active-color="#04BE02"></rater>
             </cell>
@@ -101,11 +114,20 @@
 <script>
     import {Group, Cell, CellBox, XButton, Flexbox, FlexboxItem, Rater, XTextarea, XSwitch} from 'vux'
     import ShowUploadedPics from './baseComponents/ShowUploadedPics'
+    /*订单状态码的说明*/
+    let orderStatusDesc = {
+        0: '订单未支付',
+        1: '订单已支付',
+        2: '订单已完成'
+    };
     export default {
         name: 'OrderDetail',
         components: {
             Group, Cell, CellBox, Flexbox, FlexboxItem,
             XButton, Rater, XTextarea, ShowUploadedPics, XSwitch
+        },
+        created () {
+            this.updatePicUrl();
         },
         data () {
             return {
@@ -113,7 +135,24 @@
                 commentText: "",
                 rate: 0,
                 showPriceDetail: false,
-                msg: 'Hello World!'
+            }
+        },
+        computed: {
+
+        },
+        methods: {
+            /**
+             * @desc 设置vuex中的展示图片url
+             * @return newURLList 图片的URL列表
+             */
+            updatePicUrl () {
+                let newURLList = [];
+                this.luggage.imgsUrl.forEach(function (URL, index, URLList) {
+                    newURLList.push({
+                        url: basePath + URL
+                    });
+                });
+                this.$store.commit('updateImgsUrl',newURLList);
             }
         }
     }

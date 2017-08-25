@@ -3,7 +3,7 @@
         <div>
             <XImg
                 class="ximg-width-base"
-                :src="basePath + '/mobile_src/imgs/demo1.jpg'"
+                :src="basePath + '/mobile_src/imgs/banner.jpg'"
             ></XImg>
         </div>
         <div class="y-card flex-wrap">
@@ -34,7 +34,7 @@
             <flexbox>
                 <flexbox-item>
                     <div class="sender-info-pre">
-                        <group :gutter="5">
+                        <group :gutter="5" v-if="senderInfo.time.trim().length != 0">
                             <cell title="寄出地址/时间"></cell>
                             <cell>
                                 <div slot="title" style="min-height:80px;font-size: 14px">
@@ -47,7 +47,7 @@
                 </flexbox-item>
                 <flexbox-item>
                     <div class="receiver-info-pre">
-                        <group :gutter="5">
+                        <group :gutter="5" v-if="receiverInfo.time.trim().length != 0">
                             <cell title="领回地址/时间"></cell>
                             <cell>
                                 <div slot="title" style="min-height:80px;font-size: 14px">
@@ -100,31 +100,22 @@
             </Cell>
             <x-switch title="是否需要发票" v-model="orderInfo.needInvoice"></x-switch>
         </Group>
+        <!--姓名信息、联系方式-->
         <Group>
-            <!--联系方式-->
+
             <XInput title="联系人：" v-model="orderInfo.customerName" placeholder="请输入姓名"></XInput>
-            <!--      <x-input title="验证码" class="weui-cell_vcode">
-                    <img slot="right" class="weui-vcode-img" src="http://weui.github.io/weui/images/vcode.jpg">
-                  </x-input>-->
             <XInput title="联系电话：" v-model="orderInfo.customerMobile" placeholder="">
-                <x-button slot="right" type="primary" mini>验证手机享优惠</x-button>
+                <x-button slot="right" type="primary" mini>发送验证码</x-button>
             </XInput>
-            <!--      <CellBox>
-                    <x-button mini type="primary">primary</x-button>
-                  </CellBox>-->
+            <XInput title="手机验证码：" v-model="checkCode" placeholder="">
+                <x-button slot="right" type="primary" mini>提交验证码</x-button>
+            </XInput>
             <x-textarea :max="200" placeholder="" title="备注：" v-model="orderInfo.remark"></x-textarea>
         </Group>
         <Group>
             <!--行李图片-->
             <UpLoadFile></UpLoadFile>
         </Group>
-        <!--<div style="background-color:cornflowerblue;height: 1000px;position: relative">
-          asdfa
-          sdf
-          <div style="position: absolute;bottom: 0">最底部测试</div>
-        </div>-->
-        <!--价格预览以及下单按钮-->
-
         <!--地址时间选择器-->
         <div v-transfer-dom>
             <SelectInnAddress></SelectInnAddress>
@@ -160,11 +151,12 @@
         },
         data () {
             return {
-                basePath: global.basePath,
+                basePath: basePath,
+                URLList: URLLists,
                 show1: true,
                 senderPickerType: "activeInnAddSelector",
                 receiverPickerType: "activeStationAddSelector",
-                msg: 'Hello World!',
+                checkCode: '', /*手机收到的验证码*/
                 //保价对应的保额
                 insuranceAmountMap: {
                     '0': 300,
@@ -301,7 +293,7 @@
     }
 
     .demo5-item {
-        width: 90px;
+        width: 80px;
         height: 32px;
         /*line-height: 26px;*/
         text-align: center;

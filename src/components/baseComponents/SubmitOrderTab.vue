@@ -112,15 +112,13 @@
                 });
                 /*推入要提交的表单数据*/
                 let postData = dataSerialize(this.$store.state.submitForm);
-/*                this.$http.post(URLLists.createOrder, postData, {emulateJSON: true})
-                    .then((res) => {
-                        console.log(res);
-                    })
-                    .catch((code) => {
-                        console.log('获取数据时与后台通讯失败', code);
-                    });*/
+                for (let i in this.$store.state.submitForm) {
+                    picFormData.append(i,this.$store.state.submitForm[i]);
+                }
+                /*推入openId*/
+                picFormData.append('openId', 'oWwFQw-FqknWMh8BEZwnUfzd5HGY');
                 /*上传图片以及表单信息*/
-                this.$http.post(URLLists.createOrder + '?' + postData, picFormData, {emulateJSON: true})
+                this.$http.post(URLLists.createOrder, picFormData, {emulateJSON: true})
                     .then((res) => {
                         console.log(res);
                     })
