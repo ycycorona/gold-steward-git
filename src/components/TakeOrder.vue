@@ -102,13 +102,8 @@
         </Group>
         <!--姓名信息、联系方式-->
         <Group>
-
             <XInput title="联系人：" v-model="orderInfo.customerName" placeholder="请输入姓名"></XInput>
-            <XInput title="联系电话：" v-model="orderInfo.customerMobile" placeholder="">
-                <x-button slot="right" type="primary" mini>发送验证码</x-button>
-            </XInput>
-            <XInput title="手机验证码：" v-model="checkCode" placeholder="">
-                <x-button slot="right" type="primary" mini>提交验证码</x-button>
+            <XInput title="联系电话：" v-model="orderInfo.customerMobile" placeholder="请输入联系电话">
             </XInput>
             <x-textarea :max="200" placeholder="" title="备注：" v-model="orderInfo.remark"></x-textarea>
         </Group>
