@@ -22,7 +22,6 @@ let store = new Vuex.Store({
     state: {
         currPage: 0, //当前的Tab页
         imgsUrl: [], /*订单详情页面展示照片的URL*/
-
     },
     getters: {},
     mutations: {

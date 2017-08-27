@@ -164,7 +164,7 @@
                     //flgInsurance: true, //是否保价
                     insurancePrice: 5, //保费
                     //insuranceAmount: 0, 保额
-                    preferentialPrice: 0, //优惠价
+                    //preferentialPrice: 0, //优惠价
                     //orderPrice: 0, 订单总价
                     customerName: "", //联系人姓名
                     customerMobile: "", //联系人电话
@@ -222,6 +222,7 @@
                 this.$store.commit('toggleSelectStationAddress', !this.$store.state.SelectStationAddress);
             }
 
+
         },
         watch: {
             /*深度监听data属性orderInfo的变动*/
@@ -234,12 +235,21 @@
                         insuranceCost: this.orderInfo.insurancePrice * rawOrderInfo.luggageNumber, //保险总费用
                         insuranceUnitPrice: this.insuranceAmountMap[rawOrderInfo.insurancePrice],
                         insuranceAmount: this.insuranceAmountMap[rawOrderInfo.insurancePrice] * rawOrderInfo.luggageNumber, //总保额
-                        preferentialPrice: rawOrderInfo.preferentialPrice, //优惠费用
                         // flgInsurance : BooleanToNum(rawOrderInfo.insurancePrice !== 0), 是否保价，布尔值转成数字
                     };
                     /*直接从data拷贝过来的属性*/
                     for (let i in rawOrderInfo) {
                         obj[i] = rawOrderInfo[i];
+                    }
+                    /*设置优惠*/
+                    obj.preferentialPrice = 0;
+                    if (this.$store.state.newCustomer == 1) {
+                        obj.preferentialPrice = 5;
+                        this.$store.commit('changePreferentialPriceName', '新用户立减')
+                    }
+                    if (rawOrderInfo.luggageNumber > 1) {
+                        obj.preferentialPrice += (rawOrderInfo.luggageNumber-1)*this.$store.state.mutiDiscount;
+                        this.$store.commit('changePreferentialPriceName', this.$store.state.preferentialPriceName + ' 多件立减')
                     }
                     obj.needInvoice = BooleanToNum(rawOrderInfo.needInvoice);
                     /*覆盖data直接拷贝过来的属性*/

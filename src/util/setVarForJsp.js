@@ -16,7 +16,7 @@ console.log(arguments);
     try {
         global.basePath = basePath;
         /*正式用 URL列表*/
-        global.URLLists = URLLists;
+        /*global.URLLists = URLLists;*/
         console.log('try,项目的basePath为：' + global.basePath + '此时应为正式环境');
     } catch (e) {
         global.basePath = '';

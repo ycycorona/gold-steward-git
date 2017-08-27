@@ -1,13 +1,15 @@
 /*所需的全部URLList，被setVarForJsp调用*/
 let URLLists = {
     /*创建订单的页面*/
-    toCreateOrderPage: global.basePath + 'luggage/wx/toCreateOrderPage.do',
+    toCreateOrderPage: global.basePath + 'luggage/wx/toCreateOrderPage.do?code=1&openId=oWwFQw-FqknWMh8BEZwnUfzd5HGY',
     /*创建订单*/
-    createOrder: global.basePath + '/luggage/wx/createOrder.do',
+    createOrder: global.basePath + '/luggage/wx/createOrder.do?openId=oWwFQw-FqknWMh8BEZwnUfzd5HGY',
     /*订单列表*/
     OrderList: global.basePath + '/luggage/wx/toMyOrderList.do?code=1',
     /*订单详情*/
     OrderDetail: global.basePath + '/luggage/wx/toOrderDetailPage.do?code=1',
+    /*订单支付*/
+    /*payOrder: */
 };
 let devURLLists = {
     /*创建订单的页面*/

@@ -28,7 +28,7 @@
         },
         data () {
             return {
-                orderList: global.orderList, //订单列表
+                orderList: orderList, //订单列表
                 orderStatusList: orderStatusList //订单状态
             }
         },
@@ -40,9 +40,7 @@
             toOrderDetail (orderNo) {
                 /*获取订单号*/
                 console.log(orderNo);
-                window.location.href = global.URLLists.OrderDetail + '?code=1&orderNo=' + orderNo
-                /*正是环境*/
-                window.location.href = global.URLLists.OrderDetail + '?code=1&orderNo=' + orderNo
+                window.location.href = URLLists.OrderDetail + '&orderNo=' + orderNo;
             }
         }
 

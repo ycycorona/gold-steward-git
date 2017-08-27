@@ -23,7 +23,7 @@
                     <Cell title="保价金额" v-if="computedCost.luggageNumber!=0">
                         <span>￥{{computedCost.insurancePrice}} x {{computedCost.luggageNumber}}</span>
                     </Cell>
-                    <Cell title="优惠名称" v-if="computedCost.luggageNumber!=0">
+                    <Cell :title="preferentialPriceName" v-if="computedCost.luggageNumber!=0">
                         <span class="red-font">-￥{{computedCost.preferentialPrice}}</span>
                     </Cell>
                 </group>
@@ -34,17 +34,18 @@
 
 <script>
     /*正式用 URL列表*/
-    let URLLists = {
-        /*创建订单*/
+/*    let URLLists = {
+        /!*创建订单*!/
         createOrder: global.basePath + '/luggage/wx/createOrder.do'
     };
-    /*URL列表 开发用*/
+    /!*URL列表 开发用*!/
     URLLists = {
-        /*创建订单*/
+        /!*创建订单*!/
         createOrder: 'http://172.16.12.39:8080/wxmp/luggage/wx/createOrder.do'
-    };
+    };*/
     import {Group, Cell, Popup, TransferDom, XDialog} from 'vux'
     import dataSerialize from "../../util/ajaxDataSerialize.js"
+
     export default {
         name: 'SubmitOrderTab',
         components: {
@@ -58,16 +59,23 @@
         data () {
             return {
                 moneyDetail: false,
-                msg: 'Hello World!'
+                msg: 'Hello World!',
+                errToastText: '', //显示的错误信息
+                showErrToast: '' //是否显示错误提示框
             }
         },
         computed: {
             computedCost(){
                 return this.$store.state.computedCost;
+            },
+            preferentialPriceName(){
+                return this.$store.state.preferentialPriceName;
             }
         },
         methods: {
-            /*最终格式化提交数据*/
+            /***
+             *  @desc 最终格式化提交数据
+             */
             submitOrderForm(){
                 /* console.log(JSON.stringify(this.$store.state));*/
                 let sendInfo;
@@ -101,10 +109,56 @@
                 this.$store.commit('changeSubmitForm', submitForm);
             },
             /**
-             * @desc 提交表单 包括图片以及文字表单*/
+             * @desc 表单验证
+             * */
+            verifyForm(){
+                let msg = "";
+                let flag = false; //有未填的必填项时为false
+                let submitForm = this.$store.state.submitForm;
+                if(submitForm.sendAddress == ""){
+                    msg="寄出地址未填写";
+                }else if(submitForm.sendTime == ""){
+                    msg="寄出时间未填写";
+                }else if(submitForm.takeAddress == ""){
+                    msg="领回地点未填写";
+                }else if(submitForm.takeTime == ""){
+                    msg="领回时间未填写";
+                }else if(submitForm.luggageNumber == ""){
+                    msg="行李件数未填写";
+                }else if(submitForm.customerName == ""){
+                    msg="客户姓名未填写";
+                }else if(submitForm.customerMobile == ""){
+                    msg="客户电话未填写";
+                }else{
+                    flag=true;
+                    return flag;
+                }
+                if(flag==false){
+                    this.showErrToast = true;
+                    this.errToastText = msg;
+                    this.$vux.toast.show({
+                        text: msg,
+                        type: 'cancel'
+                    });
+                    return flag;
+                }
+            },
+            /**
+             * @desc 提交表单 包括图片以及文字表单
+             * */
             createOrder() {
                 /*生成vuex里的submitForm*/
                 this.submitOrderForm();
+                /*表单验证*/
+                if (this.verifyForm() === true){
+                    /*发送创建订单的请求*/
+                    this.createOrderAjax();
+                }
+            },
+            /**
+             * @desc 发送ajax请求创建订单,要发送的数据均来自vuex
+             * */
+            createOrderAjax() {
                 /*推入要上传的图片*/
                 let picFormData =  new FormData();
                 this.$store.state.picContainer.forEach(function (val, index, arr) {
@@ -115,12 +169,14 @@
                 for (let i in this.$store.state.submitForm) {
                     picFormData.append(i,this.$store.state.submitForm[i]);
                 }
-                /*推入openId*/
-                picFormData.append('openId', 'oWwFQw-FqknWMh8BEZwnUfzd5HGY');
+                /*推入openId 正式环境需要删除*/
+                /*picFormData.append('openId', 'oWwFQw-FqknWMh8BEZwnUfzd5HGY');*/
                 /*上传图片以及表单信息*/
                 this.$http.post(URLLists.createOrder, picFormData, {emulateJSON: true})
                     .then((res) => {
                         console.log(res);
+                        /*到付款页面，或者订单列表页面*/
+                        window.location.href = URLLists.OrderList;
                     })
                     .catch((code) => {
                         console.log('获取数据时与后台通讯失败', code);
