@@ -1,0 +1,41 @@
+{
+    "sendCity": "青岛市",
+    "sendAddress": "市南区",
+    "sendTime": "2017-12-23 23:51",
+    "takeCity": "青岛市",
+    "takeAddress": "飞机场-流亭机场",
+    "takeTime": "2017-12-17 23:51",
+    "luggageNumber": 1,
+    "luggageUnitPrice": 39,
+    "insurancePrice": 5,
+    "insuranceAmount": 800,
+    "preferentialPrice": 5,
+    "orderPrice": 39,
+    "remark": "asd",
+    "needInvoice": 0,
+    "customerName": "ycy",
+    "customerMobile": "123"
+}
+
+{
+    "sendCity":"青岛",
+    "sendAddress":"流亭机场",
+    "sendTime":"2017-12-17 11:00:00",
+    "takeCity":"青岛",
+    "takeAddress":"市南区香格里拉酒店",
+    "takeTime":"2017-12-17 18:00:00",
+    "luggageNumber":2,
+    "luggageUnitPrice":39,
+    "flgInsurance":1,
+    "insurancePrice":2,
+    "insuranceAmount":500,
+    "preferentialPrice":10,
+    "orderPrice":68,
+    "remark":"备注备注",
+    "customerName":"庞衍楠",
+    "customerMobile":"13791932143",
+    "couponIdList":[1,2]
+
+}
+
+

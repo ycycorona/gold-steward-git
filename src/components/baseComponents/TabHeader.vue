@@ -2,8 +2,8 @@
     <div class="my-tab-header" style="position: absolute">
         <!--父组件通过v-model绑定的data属性可以通过this.$emit('input', val)来变更-->
         <button-tab v-model="currPage" :height="35">
-            <button-tab-item @click.native="goTakeOrder">order</button-tab-item>
-            <button-tab-item @click.native="goOrderList">order list</button-tab-item>
+            <button-tab-item @click.native="goTakeOrder">下单</button-tab-item>
+            <button-tab-item @click.native="goOrderList">订单列表</button-tab-item>
         </button-tab>
     </div>
 </template>

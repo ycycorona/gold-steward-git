@@ -1,10 +1,10 @@
 <template>
     <div class="take-order">
         <div>
-            <XImg
+<!--            <XImg
                 class="ximg-width-base"
                 :src="basePath + '/mobile_src/imgs/banner.jpg'"
-            ></XImg>
+            ></XImg>-->
         </div>
         <div class="y-card flex-wrap">
             <div class="img-wrap" @click="activeSelector($event)" data-picker-role="sender">
@@ -87,18 +87,18 @@
                             <div class="value-big">0元</div>
                             <div class="value-little">保价{{insuranceAmountMap['0']}}元/件</div>
                         </checker-item>
+                        <checker-item :value="2">
+                            <div class="value-big">2元</div>
+                            <div class="value-little">保价{{insuranceAmountMap['2']}}元/件</div>
+                        </checker-item>
                         <checker-item :value="5">
                             <div class="value-big">5元</div>
-                            <div class="value-little">保价{{insuranceAmountMap['1']}}元/件</div>
-                        </checker-item>
-                        <checker-item :value="10">
-                            <div class="value-big">10元</div>
-                            <div class="value-little">保价{{insuranceAmountMap['2']}}元/件</div>
+                            <div class="value-little">保价{{insuranceAmountMap['5']}}元/件</div>
                         </checker-item>
                     </checker>
                 </div>
             </Cell>
-            <x-switch title="是否需要发票" v-model="orderInfo.needInvoice"></x-switch>
+            <!--<x-switch title="是否需要发票" v-model="orderInfo.needInvoice"></x-switch>-->
         </Group>
         <!--姓名信息、联系方式-->
         <Group>
@@ -113,10 +113,14 @@
         </Group>
         <!--地址时间选择器-->
         <div v-transfer-dom>
-            <SelectInnAddress></SelectInnAddress>
+            <SelectInnAddress
+                :SRtype="senderPickerType=='activeInnAddSelector'?'send':'receive'"
+            ></SelectInnAddress>
         </div>
         <div v-transfer-dom>
-            <SelectStationAddress></SelectStationAddress>
+            <SelectStationAddress
+                :SRtype="senderPickerType=='activeInnAddSelector'?'receive':'send'"
+            ></SelectStationAddress>
         </div>
     </div>
 </template>
@@ -155,8 +159,8 @@
                 //保价对应的保额
                 insuranceAmountMap: {
                     '0': 300,
-                    '5': 500,
-                    '10': 1000
+                    '2': 500,
+                    '5': 800
                 },
                 orderInfo: {
                     luggageNumber: 0, //行李数量
@@ -168,7 +172,7 @@
                     //orderPrice: 0, 订单总价
                     customerName: "", //联系人姓名
                     customerMobile: "", //联系人电话
-                    needInvoice: false, //是否需要发票
+                    //needInvoice: false, 是否需要发票
                     remark: "" //用户备注
                 },
             }
@@ -206,6 +210,9 @@
                 this.senderPickerType = this.receiverPickerType;
                 this.receiverPickerType = tmp;
                 this.$store.commit('changeSenderPickerType', this.senderPickerType);
+                //清空时间
+                this.$store.commit('cancelTimeFromInnInfo');
+                this.$store.commit('cancelTimeFromStationInf');
             },
             activeSelector(e){
                 let flag = e.currentTarget.dataset.pickerRole;
@@ -251,7 +258,7 @@
                         obj.preferentialPrice += (rawOrderInfo.luggageNumber-1)*this.$store.state.mutiDiscount;
                         this.$store.commit('changePreferentialPriceName', this.$store.state.preferentialPriceName + ' 多件立减')
                     }
-                    obj.needInvoice = BooleanToNum(rawOrderInfo.needInvoice);
+                    //obj.needInvoice = BooleanToNum(rawOrderInfo.needInvoice);
                     /*覆盖data直接拷贝过来的属性*/
                     obj.orderPrice = Number(obj.sendCost) + Number(obj.insuranceCost) - Number(obj.preferentialPrice); //总价
                     this.$store.commit('changeComputedCost', obj); //向vuex总栈提交变动

@@ -4,6 +4,7 @@ let URLLists = {
     toCreateOrderPage: global.basePath + 'luggage/wx/toCreateOrderPage.do?code=1&openId=oWwFQw-FqknWMh8BEZwnUfzd5HGY',
     /*创建订单*/
     createOrder: global.basePath + '/luggage/wx/createOrder.do?openId=oWwFQw-FqknWMh8BEZwnUfzd5HGY',
+    /*获取优惠列表*/
     /*订单列表*/
     OrderList: global.basePath + '/luggage/wx/toMyOrderList.do?code=1',
     /*订单详情*/
@@ -16,7 +17,7 @@ let devURLLists = {
     /*toCreateOrderPage:'http://172.16.12.39:8080/wxmp/luggage/wx/toCreateOrderPage.do',*/
     toCreateOrderPage:'/take_order.html',
     /*创建订单*/
-    createOrder: 'http://172.16.12.39:8080/wxmp/luggage/wx/createOrder.do',
+    createOrder: 'http://172.16.12.39:8080/luggage/create',
     /*订单列表*/
     /*OrderList: 'http://172.16.12.39:8080/wxmp/luggage/wx/toMyOrderList.do?code=1'*/
     OrderList: '/order_list.html',

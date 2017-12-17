@@ -7,7 +7,7 @@ import App from './take_order.vue'
 import { AjaxPlugin, LoadingPlugin } from 'vux'
 import { setVarForJsp } from '../../util/setVarForJsp.js'
 import  { ToastPlugin } from 'vux'
-Vue.use(ToastPlugin)
+Vue.use(ToastPlugin);
 /*使用jsp时，需要指定basepath {name:'para1',val:123}*/
 setVarForJsp();
 try {
@@ -29,7 +29,7 @@ let store = new Vuex.Store({
         SelectInnAddress: false,
         SelectStationAddress: false,
         senderPickerType:'activeInnAddSelector',
-        newCustomer: newCustomer, //是否享受新用户优惠
+        newCustomer: newCustomer, //是否享受新用户优惠(默认都享受)
         preferentialPriceName: '', //当前享受的优惠名称
         mutiDiscount: mutiDiscount, //多件立减的额度
         innInfo: {
@@ -53,7 +53,7 @@ let store = new Vuex.Store({
             insurancePrice: 0,
             luggageNumber: 0,
             luggageUnitPrice: 39,
-            needInvoice: 1,
+            //needInvoice: 1,
             orderPrice: 0,
             preferentialPrice: 0,
             remark: '',
@@ -66,7 +66,7 @@ let store = new Vuex.Store({
             insurancePrice: 5,
             luggageNumber: '',
             luggageUnitPrice: '',
-            needInvoice: 0,
+            //needInvoice: 0,
             orderPrice: '',
             preferentialPrice: '',
             remark: '',
@@ -101,6 +101,12 @@ let store = new Vuex.Store({
         },
         inputStationInfo(state, newValue){
             state.stationInfo = newValue
+        },
+        cancelTimeFromInnInfo(state, newValue) {
+            state.innInfo.time = ''
+        },
+        cancelTimeFromStationInf(state, newValue) {
+            state.stationInfo.time = ''
         },
         changeComputedCost(state, newValue){
             state.computedCost = newValue

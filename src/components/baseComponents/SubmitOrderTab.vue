@@ -55,6 +55,7 @@
         },
         created(){
             /*this.submitOrderForm();*/
+            //this.testAjax();
         },
         data () {
             return {
@@ -152,7 +153,10 @@
                 /*表单验证*/
                 if (this.verifyForm() === true){
                     /*发送创建订单的请求*/
-                    this.createOrderAjax();
+                    //上传文字信息
+                    this.createOrderTextAjax();
+                    //上传图片
+                    //this.createOrderAjax();
                 }
             },
             /**
@@ -177,6 +181,35 @@
                         console.log(res);
                         /*到付款页面，或者订单列表页面*/
                         window.location.href = URLLists.OrderList;
+                    })
+                    .catch((code) => {
+                        console.log('获取数据时与后台通讯失败', code);
+                    });
+            },
+            /**
+             * @desc 发送ajax请求创建订单,要发送的数据均来自vuex,文字信息部分
+             * */
+            createOrderTextAjax() {
+                /*推入要提交的表单数据*/
+                console.log(this.$store.state.submitForm);
+                debugger;
+                /*上传图片以及表单信息*/
+                this.$http.post(URLLists.createOrder, picFormData, {emulateJSON: true})
+                    .then((res) => {
+                        console.log(res);
+                        /*到付款页面，或者订单列表页面*/
+                        window.location.href = URLLists.OrderList;
+                    })
+                    .catch((code) => {
+                        console.log('获取数据时与后台通讯失败', code);
+                    });
+            },
+            testAjax() {
+                this.$http.get('http://blog.csdn.net')
+                    .then((res) => {
+                    debugger;
+                        console.log(res);
+
                     })
                     .catch((code) => {
                         console.log('获取数据时与后台通讯失败', code);
