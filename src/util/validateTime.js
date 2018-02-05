@@ -5,12 +5,13 @@
  * errorType 0：无错误；1：时间比当前早；2：送货时间小于12:00；3：客户取货时间早于16:00
  */
 function validateTime(type, time) {
-    let timeArray = time.split(' ');
-    let dayStart = timeArray[0] + ' ' + '00:00';
-    let sendLimit = timeArray[0] + ' ' + '12:00';
-    let receiveLimit =timeArray[0] + ' ' + '16:00';
+    //debugger;
+    let timeArray = time.trim().split(' ');
+    let dayStart = timeArray[0] + 'T' + '00:00:00+08:00';
+    let sendLimit = timeArray[0] + 'T' + '12:00:00+08:00';
+    let receiveLimit =timeArray[0] + 'T' + '16:00:00+08:00';
 
-    let timeObj = new Date(time);
+    let timeObj = new Date(timeArray[0] + 'T' + timeArray[1] + '+08:00');
     let dayStartObj = new Date(dayStart);
     let sendLimitObj = new Date(sendLimit);
     let receiveLimitObj = new Date(receiveLimit);

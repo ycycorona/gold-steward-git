@@ -3,7 +3,7 @@
 import Vue from "vue";
 import FastClick from "fastclick";
 import Vuex from "vuex";
-import App from "./order_detail.vue";
+import App from "./service_introduce.vue";
 import {AjaxPlugin, LoadingPlugin, ToastPlugin} from "vux";
 
 import { setVarForJsp } from '../../util/setVarForJsp.js'
@@ -22,18 +22,11 @@ Vue.use(Vuex)
 //vuex配置
 let store = new Vuex.Store({
     state: {
-        currPage: 0, //当前的Tab页
-        imgsUrl: [], /*订单详情页面展示照片的URL*/
+
     },
     getters: {},
     mutations: {
-        /*更新currPage*/
-        changeCurrPage(state, newPage){
-            state.currPage = newPage;
-        },
-        updateImgsUrl (state, newVal) {
-            state.imgsUrl = newVal;
-        }
+
 
     },
     actions: {}

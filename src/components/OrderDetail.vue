@@ -1,35 +1,72 @@
 <template>
-    <div>
+    <div v-if="dataReady">
         <group>
             <div class="group-padding">
-                <!--订单未支付的内容-->
+                <!--订单未支付-->
                 <template v-if="luggage.orderStatus == 0">
-                    <div class="big-bold-font">订单待支付</div>
+                    <div class="big-bold-font">{{orderStatusList[0]}}</div>
                     <div class="little-grey-font margin-bottom">为不影响您的行程，请核对订单并及时支付</div>
                     <flexbox>
                         <flexbox-item>
                             <x-button
+                                @click.native="deleteLuggage"
                                 type="default"
                                 action-type="button">取消订单
                             </x-button>
                         </flexbox-item>
                         <flexbox-item>
                             <x-button
-                                type="default">
+                            v-if="userOpenId = orderOpenId"
+                            type="default"
+                            @click.native="payThisOrder">
                                 去付款
                             </x-button>
                         </flexbox-item>
                     </flexbox>
                 </template>
                 <!--订单已支付-->
-                <template v-if="luggage.orderStatus == 1">
-                    <div class="big-bold-font">订单已支付</div>
-                    <div class="little-grey-font margin-bottom">您已经付款，订单正在进行中</div>
+                <template v-if="luggage.orderStatus == 1 && isAdmin != 1">
+                    <div class="big-bold-font">{{orderStatusList[1]}}</div>
+                    <div class="little-grey-font margin-bottom">您已经付款，等待行李员取件</div>
                 </template>
-                <!--订单已完成-->
-                <template v-if="luggage.orderStatus == 2">
-                    <div class="big-bold-font">订单已完成</div>
-                    <div class="little-grey-font margin-bottom">订单已经完成，合作愉快！</div>
+                <template v-if="luggage.orderStatus == 1 && isAdmin == 1">
+                    <div class="big-bold-font">{{orderStatusList[1]}}</div>
+                    <x-button
+                        @click.native="sendLuggageFrom"
+                        type="default"
+                        action-type="button">行李员取件
+                    </x-button>
+                </template>
+                <!--行李员已取件-->
+                <template v-if="luggage.orderStatus == 2 && isAdmin != 1">
+                    <div class="big-bold-font">{{orderStatusList[2]}}</div>
+                    <div class="little-grey-font margin-bottom">行李员已经取件</div>
+                </template>
+                <template v-if="luggage.orderStatus == 2 && isAdmin == 1">
+                    <div class="big-bold-font">{{orderStatusList[2]}}</div>
+                    <x-button
+                        @click.native="sendLuggageTo"
+                        type="default"
+                        action-type="button">行李送达
+                    </x-button>
+                </template>
+                <!--行李已送达-->
+                <template v-if="luggage.orderStatus == 3 && isAdmin != 1">
+                    <div class="big-bold-font">{{orderStatusList[3]}}</div>
+                    <div class="little-grey-font margin-bottom">行李已经送达</div>
+                </template>
+                <template v-if="luggage.orderStatus == 3 && isAdmin == 1">
+                    <div class="big-bold-font">{{orderStatusList[3]}}</div>
+                    <x-button
+                        @click.native="completeLuggage"
+                        type="default"
+                        action-type="button">客户取件
+                    </x-button>
+                </template>
+                <!--客户已经取件，订单完成-->
+                <template v-if="luggage.orderStatus == 4">
+                    <div class="big-bold-font">{{orderStatusList[4]}}</div>
+                    <div class="little-grey-font margin-bottom">客户已经取走行李，订单完成</div>
                 </template>
             </div>
 
@@ -51,15 +88,14 @@
             <template v-if="showPriceDetail">
                 <cell
                 title="行李寄送费用"
-                :value="'￥'+ (luggage.luggageNumber * luggage.luggageNumber)"
+                :value="'￥'+ (luggage.luggageNumber * luggage.luggageUnitPrice)"
                 :border-intent="false"
                 class="sub-item"
                 is-link>
-                    {{'￥'+ (luggage.luggageNumber * luggage.luggageNumber)}}
                 </cell>
                 <cell
                 title="保价金额"
-                :value="'￥' + (luggage.insurancePrice + luggage.luggageNumber)"
+                :value="'￥' + luggage.insurancePrice"
                 class="sub-item"
                 is-link></cell>
                 <cell
@@ -70,21 +106,18 @@
             </template>
         </group>
         <group>
-            <cell title="寄件时间" :value="luggage.sendTime "></cell>
+            <cell title="寄件时间" :value="dateFormat(new Date(luggage.sendTime),'YYYY-MM-DD HH:mm')"></cell>
             <cell title="寄件位置" :value="luggage.sendCity+luggage.sendAddress"></cell>
         </group>
         <group>
-            <cell title="取件时间" :value="luggage.takeTime"></cell>
+            <cell title="取件时间" :value="dateFormat(new Date(luggage.takeTime),'YYYY-MM-DD HH:mm')"></cell>
             <cell title="取件位置" :value="luggage.takeCity+luggage.takeAddress"></cell>
         </group>
         <!--发票备注-->
         <group>
-            <x-switch title="需要发票"
-              disabled
-              :value="luggage.needInvoice==1"></x-switch>
             <div>
                 <x-textarea
-                    title="备注"
+                    title="备注："
                     :max="200"
                     readonly
                     :show-counter="false"
@@ -96,7 +129,7 @@
             <ShowUploadedPics></ShowUploadedPics>
         </group>
         <!--点评-->
-        <group v-if="luggage.orderStatus == 0">
+<!--        <group v-if="luggage.orderStatus == 4">
             <cell title="评分">
                 <rater v-model="rate" slot="value" :max="5" active-color="#04BE02"></rater>
             </cell>
@@ -104,22 +137,20 @@
             placeholder="请输入评论"
             :max="200"
             v-model="commentText"></x-textarea>
-        </group>
-        <div style="margin: 10px;">
-            <x-button type="primary">提交</x-button>
-        </div>
+            <div style="margin: 10px;">
+                <x-button type="primary">提交</x-button>
+            </div>
+        </group>-->
+
     </div>
 </template>
 
 <script>
-    import {Group, Cell, CellBox, XButton, Flexbox, FlexboxItem, Rater, XTextarea, XSwitch} from 'vux'
+    import {orderStatusList} from '../data/commonDic.js'
+    import {Group, Cell, CellBox, XButton, Flexbox, FlexboxItem, Rater, XTextarea, XSwitch,
+        dateFormat} from 'vux'
     import ShowUploadedPics from './baseComponents/ShowUploadedPics'
-    /*订单状态码的说明*/
-    let orderStatusDesc = {
-        0: '订单未支付',
-        1: '订单已支付',
-        2: '订单已完成'
-    };
+    import getSearchParams from '../util/getSearchParams'
     export default {
         name: 'OrderDetail',
         components: {
@@ -127,14 +158,22 @@
             XButton, Rater, XTextarea, ShowUploadedPics, XSwitch
         },
         created () {
-            this.updatePicUrl();
+            this.getDetailData();
+            this.getUserInfo(); //设置data.isAdmin;
         },
         data () {
             return {
-                luggage:luggage,
+                dataReady: false,
+                id: getSearchParams(window.location.search).id,
+                isAdmin: 0,
+                orderStatusList: orderStatusList,
+                luggage: [],
                 commentText: "",
                 rate: 0,
                 showPriceDetail: false,
+                queryTime:0,
+                userOpenId: '',
+                orderOpenId: ''
             }
         },
         computed: {
@@ -153,7 +192,241 @@
                     });
                 });
                 this.$store.commit('updateImgsUrl',newURLList);
-            }
+            },
+            getDetailData() {
+                this.$vux.loading.show({
+                    text: '正在载入订单列表'
+                });
+                this.getDetailDataAjax();
+            },
+            //获取订单详情信息
+            getDetailDataAjax(){
+                let url = URLLists.getOrderDetailDate + '?id=' + this.id;
+                this.$http.get(url)
+                    .then((res) => {
+                        this.luggage = res.data.data;
+                        this.orderOpenId = res.data.data.openId;
+                        this.updatePicUrl();
+                        this.$vux.loading.hide();
+                        this.dataReady = true;
+                    })
+                    .catch((code) => {
+                        console.log('获取数据时与后台通讯失败', code);
+                        this.$vux.loading.hide();
+                    });
+            },
+            /**
+             * @desc 行李员取件操作
+             */
+            sendLuggageFrom() {
+
+                let r = confirm("是否确认操作");
+                if (r === false) {
+                    return;
+                }
+
+                this.$vux.loading.show({
+                    text: '正在与后台通信'
+                });
+                let url = URLLists.sendLuggageFrom + '?id=' + this.id;
+                this.$http.get(url)
+                    .then((res) => {
+                        console.log(res);
+                        this.luggage = res.data.data;
+                        this.$vux.loading.hide();
+                    })
+                    .catch((code) => {
+                        console.log('获取数据时与后台通讯失败', code);
+                        this.$vux.loading.hide();
+                    });
+            },
+            /**
+             * @desc 行李已送达
+             */
+            sendLuggageTo() {
+
+                let r = confirm("是否确认操作");
+                if (r === false) {
+                    return;
+                }
+
+                this.$vux.loading.show({
+                    text: '正在与后台通信'
+                });
+                let url = URLLists.sendLuggageTo + '?id=' + this.id;
+                this.$http.get(url)
+                    .then((res) => {
+                        console.log(res);
+                        this.luggage = res.data.data;
+                        this.$vux.loading.hide();
+                    })
+                    .catch((code) => {
+                        console.log('获取数据时与后台通讯失败', code);
+                        this.$vux.loading.hide();
+                    });
+            },
+            /**
+             * @desc 客户已取行李
+             */
+            completeLuggage() {
+
+                let r = confirm("是否确认操作");
+                if (r === false) {
+                    return;
+                }
+
+                this.$vux.loading.show({
+                    text: '正在与后台通信'
+                });
+                let url = URLLists.completeLuggage + '?id=' + this.id;
+                this.$http.get(url)
+                    .then((res) => {
+                        console.log(res);
+                        this.luggage = res.data.data;
+                        this.$vux.loading.hide();
+                    })
+                    .catch((code) => {
+                        console.log('获取数据时与后台通讯失败', code);
+                        this.$vux.loading.hide();
+                    });
+            },
+            /**
+             * @desc 删除订单
+             */
+            deleteLuggage() {
+
+                let r = confirm("是否确认操作");
+                if (r === false) {
+                    return;
+                }
+
+                this.$vux.loading.show({
+                    text: '正在与后台通信'
+                });
+                let url = URLLists.deleteLuggage + '?id=' + this.id;
+                this.$http.get(url)
+                    .then((res) => {
+                        console.log(res);
+                        //this.luggage = res.data.data;
+                        this.$vux.loading.hide();
+                        if (res.data.successFlag == true) {
+                            this.deleteThenReturnList();
+                        } else {
+                            this.deleteFailMsg();
+                        }
+                    })
+                    .catch((code) => {
+                        console.log('获取数据时与后台通讯失败', code);
+                        this.$vux.loading.hide();
+                    });
+            },
+            /**
+             * @desc 获取用户基本信息
+             */
+            getUserInfo() {
+                this.$vux.loading.show({
+                    text: '正在与后台通信'
+                });
+                let url = URLLists.getUserInfo;
+                this.$http.get(url)
+                    .then((res) => {
+                        console.log(res);
+                        this.isAdmin = res.data.data.isAdmin;
+                        this.userOpenId = res.data.data.openId;
+                        this.$vux.loading.hide();
+                    })
+                    .catch((code) => {
+                        console.log('获取数据时与后台通讯失败', code);
+                        this.$vux.loading.hide();
+                    });
+            },
+            /**
+             * @desc 删除订单成功后返回订单列表
+             */
+            deleteThenReturnList() {
+                this.$vux.toast.show({
+                    type: 'success',
+                    text: '删除订单成功',
+                    position: 'middle',
+                    onHide: function () {
+                        window.location.href = URLLists.toOrderList;
+                    }
+                });
+            },
+            /**
+             * @desc 删除订单失败的提示信息
+             */
+            deleteFailMsg() {
+                this.$vux.toast.show({
+                    type: 'warn',
+                    text: '删除订单失败',
+                    position: 'middle',
+                });
+            },
+            dateFormat: dateFormat,
+            //付款
+            payThisOrder () {
+                //微信支付实例
+                this.$towxPay(this, this.luggage.id)
+                    .then((x) => {
+                        //alert(JSON.stringify(x));
+                        //todo: 蒙层出现
+                        this.loadingShow();
+                        //todo: 轮询支付结果
+                        this.queryPayedStatus();
+                    })
+                    .catch((error) => {
+                        alert('支付发生了错误:' + JSON.stringify(error));
+                    })
+            },
+            //支付成功后轮训后台，确认支付结果
+            queryPayedStatus () {
+                let url = URLLists.getOrderDetailDate + '?id=' + this.id;
+                this.$http.get(url)
+                    .then((res) => {
+                        if(res.data.data.orderStatus == 1) {
+                            this.loadHide();
+                            //debugger;
+                            this.$vux.toast.show({
+                                text: '支付成功',
+                                type:'success',
+                                width: '9rem',
+                                onHide: () => {
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            this.queryTime ++;
+                            if (this.queryTime > 60) {
+                                reject('轮询次数过多');
+                            }
+                            setTimeout(this.queryPayedStatus, 1000);
+                        }
+                    })
+                    .catch((error) => {
+                        alert(JSON.stringify(error));
+                        this.$vux.toast.show({
+                            text: '轮询后台支付结果时通讯失败，重新登录查询' + JSON.stringify(error),
+                            type:'warn',
+                            width: '9rem',
+                            onHide: () => {
+                                window.location.reload();
+                            }
+                        });
+                    });
+            },
+            //蒙层显示
+            loadingShow () {
+                this.$vux.loading.show({
+                    text: '正在确认订单支付结果'
+                });
+                document.getElementsByTagName('html')[0].style['overflow-x'] = 'hidden';
+            },
+            //蒙层隐藏
+            loadHide () {
+                this.$vux.loading.hide();
+                document.getElementsByTagName('html')[0].style['overflow-x'] = 'auto'
+            },
         }
     }
 </script>

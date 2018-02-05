@@ -12,9 +12,9 @@ Vue.use(ToastPlugin);
 setVarForJsp();
 try {
     global.newCustomer = newCustomer; //标识是不是新用户
-    global.mutiDiscounts = 5; //多件立减的额度
+    global.mutiDiscounts = mutiDiscount; //多件立减的额度
 } catch (e) {
-    global.orderList = [{"id":354,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080161","sendCity":"青岛市","sendAddress":"市南区","sendTime":"2017-08-23","takeCity":"青岛市","takeAddress":"飞机场-流亭机场","takeTime":"2017-08-23","luggageNumber":1,"luggageUnitPrice":39.0,"insurancePrice":5.0,"insuranceAmount":500.0,"preferentialPrice":0.0,"orderPrice":44.0,"remark":"sdsdsd","needInvoice":0,"customerName":"ycy","customerMobile":"15655555","orderStatus":0,"orderCreateTime":"2017-08-23"},{"id":382,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080189","orderPrice":99.0,"orderStatus":0,"orderCreateTime":"2017-08-23"},{"id":383,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080190","orderPrice":99.0,"orderStatus":0,"orderCreateTime":"2017-08-23"},{"id":417,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080224","sendCity":"","sendAddress":"","takeCity":"","takeAddress":"","luggageNumber":0,"luggageUnitPrice":39.0,"insurancePrice":0.0,"insuranceAmount":500.0,"preferentialPrice":0.0,"orderPrice":0.0,"remark":"","needInvoice":1,"customerName":"","customerMobile":"","orderStatus":0,"orderCreateTime":"2017-08-25"},{"id":418,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080225","sendCity":"","sendAddress":"","takeCity":"","takeAddress":"","luggageNumber":0,"luggageUnitPrice":39.0,"luggagePic":"884d91a3-3f80-4295-a928-ec2bb38fb49e","insurancePrice":0.0,"insuranceAmount":500.0,"preferentialPrice":0.0,"orderPrice":0.0,"remark":"","needInvoice":1,"customerName":"","customerMobile":"","orderStatus":0,"orderCreateTime":"2017-08-25"},{"id":427,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080234","sendCity":"青岛市","sendAddress":"市南区","sendTime":"2017-08-25","takeCity":"青岛市","takeAddress":"飞机场-流亭机场","takeTime":"2017-08-25","luggageNumber":1,"luggageUnitPrice":39.0,"luggagePic":"91066a93-4d62-42eb-a8e7-27a8396dccad","insurancePrice":5.0,"insuranceAmount":500.0,"preferentialPrice":0.0,"orderPrice":44.0,"remark":"阿斯蒂芬阿斯蒂芬","needInvoice":0,"customerName":"呵呵哒","customerMobile":"545451","orderStatus":0,"orderCreateTime":"2017-08-25"}];
+    //global.orderList = [{"id":354,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080161","sendCity":"青岛市","sendAddress":"市南区","sendTime":"2017-08-23","takeCity":"青岛市","takeAddress":"飞机场-流亭机场","takeTime":"2017-08-23","luggageNumber":1,"luggageUnitPrice":39.0,"insurancePrice":5.0,"insuranceAmount":500.0,"preferentialPrice":0.0,"orderPrice":44.0,"remark":"sdsdsd","needInvoice":0,"customerName":"ycy","customerMobile":"15655555","orderStatus":0,"orderCreateTime":"2017-08-23"},{"id":382,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080189","orderPrice":99.0,"orderStatus":0,"orderCreateTime":"2017-08-23"},{"id":383,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080190","orderPrice":99.0,"orderStatus":0,"orderCreateTime":"2017-08-23"},{"id":417,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080224","sendCity":"","sendAddress":"","takeCity":"","takeAddress":"","luggageNumber":0,"luggageUnitPrice":39.0,"insurancePrice":0.0,"insuranceAmount":500.0,"preferentialPrice":0.0,"orderPrice":0.0,"remark":"","needInvoice":1,"customerName":"","customerMobile":"","orderStatus":0,"orderCreateTime":"2017-08-25"},{"id":418,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080225","sendCity":"","sendAddress":"","takeCity":"","takeAddress":"","luggageNumber":0,"luggageUnitPrice":39.0,"luggagePic":"884d91a3-3f80-4295-a928-ec2bb38fb49e","insurancePrice":0.0,"insuranceAmount":500.0,"preferentialPrice":0.0,"orderPrice":0.0,"remark":"","needInvoice":1,"customerName":"","customerMobile":"","orderStatus":0,"orderCreateTime":"2017-08-25"},{"id":427,"openId":"oWwFQw-FqknWMh8BEZwnUfzd5HGY","orderNo":"2017080234","sendCity":"青岛市","sendAddress":"市南区","sendTime":"2017-08-25","takeCity":"青岛市","takeAddress":"飞机场-流亭机场","takeTime":"2017-08-25","luggageNumber":1,"luggageUnitPrice":39.0,"luggagePic":"91066a93-4d62-42eb-a8e7-27a8396dccad","insurancePrice":5.0,"insuranceAmount":500.0,"preferentialPrice":0.0,"orderPrice":44.0,"remark":"阿斯蒂芬阿斯蒂芬","needInvoice":0,"customerName":"呵呵哒","customerMobile":"545451","orderStatus":0,"orderCreateTime":"2017-08-25"}];
     global.newCustomer = 1; // 1标识新顾客
     global.mutiDiscount = 5; //多件立减的额度
 }
@@ -28,7 +28,7 @@ let store = new Vuex.Store({
         currPage: 0, //当前的Tab页
         SelectInnAddress: false,
         SelectStationAddress: false,
-        senderPickerType:'activeInnAddSelector',
+        senderPickerType: 'activeInnAddSelector',
         newCustomer: newCustomer, //是否享受新用户优惠(默认都享受)
         preferentialPriceName: '', //当前享受的优惠名称
         mutiDiscount: mutiDiscount, //多件立减的额度
@@ -54,6 +54,7 @@ let store = new Vuex.Store({
             luggageNumber: 0,
             luggageUnitPrice: 39,
             //needInvoice: 1,
+            couponIdList: [],
             orderPrice: 0,
             preferentialPrice: 0,
             remark: '',
@@ -67,6 +68,7 @@ let store = new Vuex.Store({
             luggageNumber: '',
             luggageUnitPrice: '',
             //needInvoice: 0,
+            couponIdList: [],
             orderPrice: '',
             preferentialPrice: '',
             remark: '',

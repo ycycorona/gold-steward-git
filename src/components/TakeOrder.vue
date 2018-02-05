@@ -98,6 +98,26 @@
                     </checker>
                 </div>
             </Cell>
+
+            <!--选择优惠券-->
+            <Cell
+                primary="content"
+                title=""
+                class="check-cell">
+                <div slot="child" style="position: relative;width: 100%">
+                    <div style="padding-bottom: 10px">可用优惠券</div>
+                    <checker
+                        v-model="orderInfo.couponId"
+                        default-item-class="demo5-item"
+                        selected-item-class="demo5-item-selected"
+                    >
+                        <checker-item :value="item.id" v-for="(item, index) in listCoupon" style="height: 24px" :key="index">
+                            <div >{{item.value}}元</div>
+                        </checker-item>
+                    </checker>
+                </div>
+            </Cell>
+
             <!--<x-switch title="是否需要发票" v-model="orderInfo.needInvoice"></x-switch>-->
         </Group>
         <!--姓名信息、联系方式-->
@@ -147,6 +167,7 @@
             TransferDom
         },
         created(){
+            this.getListCoupon();
         },
         data () {
             return {
@@ -166,15 +187,18 @@
                     luggageNumber: 0, //行李数量
                     luggageUnitPrice: 39, //行李单价
                     //flgInsurance: true, //是否保价
-                    insurancePrice: 5, //保费
+                    insurancePrice: 2, //保费
                     //insuranceAmount: 0, 保额
                     //preferentialPrice: 0, //优惠价
                     //orderPrice: 0, 订单总价
                     customerName: "", //联系人姓名
                     customerMobile: "", //联系人电话
                     //needInvoice: false, 是否需要发票
+                    couponId: 0, //选中的优惠券
                     remark: "" //用户备注
                 },
+                listCoupon: [], //可用的优惠券
+
             }
         },
         computed: {
@@ -227,6 +251,20 @@
             },
             activeStationAddSelector(){
                 this.$store.commit('toggleSelectStationAddress', !this.$store.state.SelectStationAddress);
+            },
+            /**
+             * @desc 获取可用的优惠券列表
+             **/
+            getListCoupon() {
+                this.$http.get(URLLists.getListCoupon)
+                    .then((res) => {
+                        this.listCoupon = res.data.data;
+                        console.log(this.listCoupon);
+                    })
+                    .catch((code) => {
+                        console.log('获取数据时与后台通讯失败', code);
+                        this.listCoupon = [{id: 1,value: 5},{id: 2,value: 10}];
+                    });
             }
 
 
@@ -256,11 +294,23 @@
                     }
                     if (rawOrderInfo.luggageNumber > 1) {
                         obj.preferentialPrice += (rawOrderInfo.luggageNumber-1)*this.$store.state.mutiDiscount;
-                        this.$store.commit('changePreferentialPriceName', this.$store.state.preferentialPriceName + ' 多件立减')
+                        this.$store.commit('changePreferentialPriceName', this.$store.state.preferentialPriceName + '+多件立减')
                     }
                     //obj.needInvoice = BooleanToNum(rawOrderInfo.needInvoice);
+                    //优惠券
+                    obj.couponIdList = [];
+
+                    if (rawOrderInfo.couponId != '') {
+                        obj.couponIdList.push(rawOrderInfo.couponId);
+                        let coupon = this.listCoupon.find(function (ele) {
+                            return ele.id == rawOrderInfo.couponId;
+                        });
+                        obj.preferentialPrice += coupon.value;
+                        this.$store.commit('changePreferentialPriceName', this.$store.state.preferentialPriceName + '+优惠券')
+                    }
                     /*覆盖data直接拷贝过来的属性*/
-                    obj.orderPrice = Number(obj.sendCost) + Number(obj.insuranceCost) - Number(obj.preferentialPrice); //总价
+                    obj.orderPrice = obj.sendCost == 0 ?
+                        0 : Number(obj.sendCost) + Number(obj.insuranceCost) - Number(obj.preferentialPrice); //总价
                     this.$store.commit('changeComputedCost', obj); //向vuex总栈提交变动
                 },
                 deep: true

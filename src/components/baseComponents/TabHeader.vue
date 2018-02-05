@@ -57,7 +57,7 @@
                 window.location.href = URLLists.toCreateOrderPage;
             },
             goOrderList() {
-                window.location.href = URLLists.OrderList;
+                window.location.href = URLLists.toOrderList;
             }
 
         }

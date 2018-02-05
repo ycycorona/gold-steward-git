@@ -1,13 +1,18 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
-
+var basePath = 'http://qingyun.tunnel.echomod.cn/';
+var originBasePath = 'http://172.16.12.39:8888/';
+var proxyCookie = 'JSESSIONID=926C5DF37EF32D9414AF6AE403669073';
+var Host = 'qingyun.tunnel.echomod.cn';
 module.exports = {
   build: {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
-    assetsRoot: path.resolve(__dirname, '../dist'),
+    //assetsRoot: path.resolve(__dirname, '../dist'),
+    //assetsRoot: 'C:/data/workSpace/mpro/jinguanjia/src/main/resources/static/test',
+    assetsRoot: path.resolve('C:/data/workSpace/mpro/jinguanjia/src/main/resources/static'),
     assetsSubDirectory: 'mobile_src',
-    assetsPublicPath: '<%=basePath%>',
+    assetsPublicPath: '/',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -27,7 +32,124 @@ module.exports = {
     autoOpenBrowser: false,
     assetsSubDirectory: 'mobile_src',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+        /*接口代理*/
+        '/luggage/create': {
+            target: basePath,
+            headers: {
+                /*每次登陆后手动复制过来*/
+                Cookie: proxyCookie,
+                Host: Host
+            }
+        },
+        '/luggage/listCoupon': {
+            target: basePath,
+            headers: {
+                /*每次登陆后手动复制过来*/
+                Cookie: proxyCookie,
+                Host: Host
+
+            }
+        },
+        '/luggage/listDate': {
+            target: basePath,
+            headers: {
+                /*每次登陆后手动复制过来*/
+                Cookie: proxyCookie,
+                Host: Host
+            }
+        },
+        '/luggage/getDetailDate': {
+            target: basePath,
+            headers: {
+                /*每次登陆后手动复制过来*/
+                Cookie: proxyCookie,
+                Host: Host
+            }
+        },
+        '/luggage/sendLuggageFrom': {
+            target: basePath,
+            headers: {
+                /*每次登陆后手动复制过来*/
+                Cookie: proxyCookie,
+                Host: Host
+            }
+        },
+        '/luggage/sendLuggageTo': {
+            target: basePath,
+            headers: {
+                /*每次登陆后手动复制过来*/
+                Cookie: proxyCookie,
+                Host: Host
+            }
+        },
+        '/luggage/completeLuggage': {
+            target: basePath,
+            headers: {
+                /*每次登陆后手动复制过来*/
+                Cookie: proxyCookie,
+                Host: Host
+
+            }
+        },
+        '/file/upload': {
+            target: basePath,
+            headers: {
+                /*每次登陆后手动复制过来*/
+                Cookie: proxyCookie,
+                Host: Host
+
+            }
+        },
+        '/luggage/deleteLuggage': {
+            target: basePath,
+            headers: {
+                /*每次登陆后手动复制过来*/
+                Cookie: proxyCookie,
+                Host: Host
+            }
+        },
+        '/luggage/getUserInfo': {
+            target: basePath,
+            headers: {
+                /*每次登陆后手动复制过来*/
+                Cookie: proxyCookie,
+                Host: Host
+            }
+        },
+        '/luggage/createPayOrder': {
+            target: basePath,
+            headers: {
+                /*每次登陆后手动复制过来*/
+                Cookie: proxyCookie,
+                Host: Host
+            }
+        },
+
+        /*本地重写path的接口*/
+        '/luggage/toCreatePage': {
+            target: originBasePath,
+            pathRewrite: {
+                '^/luggage/toCreatePage': '/take_order.html'
+            },
+            onProxyReq(proxyReq, req, res) {
+                 /*console.log('req.headers', req.headers);
+                 console.log('proxyReq', proxyReq);*/
+            },
+        },
+        '/luggage/toListPage': {
+            target: originBasePath,
+            pathRewrite: {
+                '^/luggage/toListPage': '/order_list.html'
+            },
+        },
+        '/luggage/toDetailPage': {
+            target: originBasePath,
+            pathRewrite: {
+                '^/luggage/toDetailPage': '/order_detail.html'
+            },
+        }
+    },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)

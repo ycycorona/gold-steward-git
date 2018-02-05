@@ -33,18 +33,7 @@
 </template>
 
 <script>
-    /*正式用 URL列表*/
-/*    let URLLists = {
-        /!*创建订单*!/
-        createOrder: global.basePath + '/luggage/wx/createOrder.do'
-    };
-    /!*URL列表 开发用*!/
-    URLLists = {
-        /!*创建订单*!/
-        createOrder: 'http://172.16.12.39:8080/wxmp/luggage/wx/createOrder.do'
-    };*/
     import {Group, Cell, Popup, TransferDom, XDialog} from 'vux'
-    import dataSerialize from "../../util/ajaxDataSerialize.js"
 
     export default {
         name: 'SubmitOrderTab',
@@ -56,6 +45,7 @@
         created(){
             /*this.submitOrderForm();*/
             //this.testAjax();
+
         },
         data () {
             return {
@@ -92,10 +82,10 @@
                 let submitForm = {
                     sendCity: sendInfo.address0,
                     sendAddress: sendInfo.address1 + sendInfo.address2,
-                    sendTime: sendInfo.time,
+                    sendTime: sendInfo.time + ':00',
                     takeCity: receiveInfo.address0,
                     takeAddress: receiveInfo.address1 + receiveInfo.address2,
-                    takeTime: receiveInfo.time,
+                    takeTime: receiveInfo.time + ':00',
                     luggageNumber: computedCost.luggageNumber,
                     luggageUnitPrice: computedCost.luggageUnitPrice,
                     insurancePrice: computedCost.insuranceCost,
@@ -103,7 +93,8 @@
                     preferentialPrice: computedCost.preferentialPrice,
                     orderPrice: computedCost.orderPrice,
                     remark: computedCost.remark,
-                    needInvoice: computedCost.needInvoice,
+                    //needInvoice: computedCost.needInvoice,
+                    couponIdList: computedCost.couponIdList,
                     customerName: computedCost.customerName,
                     customerMobile: computedCost.customerMobile,
                 };
@@ -153,37 +144,41 @@
                 /*表单验证*/
                 if (this.verifyForm() === true){
                     /*发送创建订单的请求*/
+                    this.$vux.loading.show({
+                        text: '正在创建订单'
+                    });
                     //上传文字信息
                     this.createOrderTextAjax();
                     //上传图片
-                    //this.createOrderAjax();
+                    //this.createOrderPicsAjax('test');
                 }
             },
             /**
-             * @desc 发送ajax请求创建订单,要发送的数据均来自vuex
+             * @desc 发送ajax请求创建订单,要发送的数据均来自vuex,图片部分
              * */
-            createOrderAjax() {
+            createOrderPicsAjax(myFileUuid, id) {
+
                 /*推入要上传的图片*/
                 let picFormData =  new FormData();
                 this.$store.state.picContainer.forEach(function (val, index, arr) {
-                    picFormData.append(val.index, val.file);
+                    picFormData.append('files', val.file);
                 });
-                /*推入要提交的表单数据*/
-                let postData = dataSerialize(this.$store.state.submitForm);
-                for (let i in this.$store.state.submitForm) {
-                    picFormData.append(i,this.$store.state.submitForm[i]);
-                }
-                /*推入openId 正式环境需要删除*/
-                /*picFormData.append('openId', 'oWwFQw-FqknWMh8BEZwnUfzd5HGY');*/
-                /*上传图片以及表单信息*/
-                this.$http.post(URLLists.createOrder, picFormData, {emulateJSON: true})
+                /*推入myFileUuid*/
+                picFormData.append('uuid', myFileUuid);
+                console.log(myFileUuid);
+                /*上传图片以及myFileUuid*/
+                this.$http.post(URLLists.uploadFile, picFormData, {emulateJSON: true})
                     .then((res) => {
                         console.log(res);
-                        /*到付款页面，或者订单列表页面*/
-                        window.location.href = URLLists.OrderList;
+                        /*到付款页面，或者订单详情页面*/
+                        //window.location.href = URLLists.toOrderList;
+                        window.location.href = URLLists.toOrderDetail + '?id=' + id;
+                        this.$vux.loading.hide();
                     })
                     .catch((code) => {
                         console.log('获取数据时与后台通讯失败', code);
+                        alert('获取数据时与后台通讯失败' + code);
+                        this.$vux.loading.hide();
                     });
             },
             /**
@@ -192,26 +187,26 @@
             createOrderTextAjax() {
                 /*推入要提交的表单数据*/
                 console.log(this.$store.state.submitForm);
-                debugger;
                 /*上传图片以及表单信息*/
-                this.$http.post(URLLists.createOrder, picFormData, {emulateJSON: true})
+                this.$http.post(URLLists.createOrder, this.$store.state.submitForm)
                     .then((res) => {
                         console.log(res);
-                        /*到付款页面，或者订单列表页面*/
-                        window.location.href = URLLists.OrderList;
+                        this.createOrderPicsAjax(res.data.data.myFileUuid, res.data.data.id);
                     })
                     .catch((code) => {
+                        this.$vux.loading.hide();
                         console.log('获取数据时与后台通讯失败', code);
                     });
             },
             testAjax() {
-                this.$http.get('http://blog.csdn.net')
+                this.$http.get(URLLists.getListCoupon)
                     .then((res) => {
                     debugger;
                         console.log(res);
-
+                        this.$vux.loading.hide();
                     })
                     .catch((code) => {
+                        this.$vux.loading.hide();
                         console.log('获取数据时与后台通讯失败', code);
                     });
             }
