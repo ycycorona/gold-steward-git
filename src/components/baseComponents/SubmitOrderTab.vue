@@ -121,6 +121,8 @@
                     msg="客户姓名未填写";
                 }else if(submitForm.customerMobile == ""){
                     msg="客户电话未填写";
+                }else if(submitForm.takeAddress == submitForm.sendAddress){
+                    msg="收发地址相同";
                 }else{
                     flag=true;
                     return flag;

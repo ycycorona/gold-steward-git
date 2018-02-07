@@ -8,7 +8,7 @@
                 <PopupHeader
                     left-text="取消"
                     right-text="确定"
-                    title="选择地址"
+                    title="选择酒店地址"
                     :show-bottom-border="false"
                     @on-click-left="$store.commit('toggleSelectInnAddress',false);"
                     @on-click-right="confirmInput"></PopupHeader>
@@ -33,11 +33,11 @@
                     </cell>
                 </group>
                 <!--地址选择器-->
-                <Group title="选择区域">
+                <Group title="选择区">
                     <PopupPicker
                         :data='QDdistrictList'
                         value-text-align="left"
-                        placeholder="选择区域"
+                        placeholder="选择区"
                         show-name
                         :popup-style="{zIndex: 10002}"
                         ref="innPicker"
@@ -46,15 +46,10 @@
                         @on-hide="isPickerMaskShow=false"></PopupPicker>
                 </Group>
                 <group title="详细地址">
-                    <x-input title="" v-model="innInfo.address2" placeholder="输入详细地址"></x-input>
+                    <x-input title="" v-model="innInfo.address2" placeholder="输入酒店详细地址"></x-input>
                 </group>
                 <group title="时间">
                     <datetime-view
-                        :min-hour="7"
-                        :max-hour="12"
-                        :start-date="nowDate_1"
-                        :end-date="nextMonthDate"
-                        :minute-list="['00', '30']"
                         v-model="innInfo.time"
                         ref="datetime1"
                         format="YYYY-MM-DD HH:mm"></datetime-view>
@@ -81,11 +76,8 @@
     import {QDdistrictList, QDdistrictListMap} from '../../data/addressData.js'
     /*获得当前日期*/
     let nowDate = dateFormat(new Date(), 'YYYY-MM-DD HH:mm');
-    let nowDate_1 = dateFormat(new Date(), 'YYYY-MM-DD');
-    let nextDate = dateFormat(new Date(Number(new Date()) + 1000*3600*24), 'YYYY-MM-DD');
-    let nextMonthDate = dateFormat(new Date(Number(new Date()) + 1000*3600*24*30), 'YYYY-MM-DD');
     export default {
-        name: 'SelectInnAddress',
+        name: 'SelectAddress',
         components: {
             Popup, XSwitch, Group, PopupHeader, Picker, Cell, XInput, DatetimeView, GroupTitle,
             PopupPicker, Masker
@@ -107,13 +99,11 @@
                 isPickerMaskShow: false,
                 innInfo: {
                     address0: "青岛市",
-                    address1: ["0"],
+                    address1: ["370202"],
                     address2: "",
-                    time: nextDate + '07:00'
+                    time: nowDate
                 },
-                QDdistrictList: QDdistrictList,
-                nowDate_1: nowDate_1,
-                nextMonthDate: nextMonthDate
+                QDdistrictList: QDdistrictList
             }
         },
         computed: {
@@ -152,7 +142,7 @@
                 //如果总站的数据被清空了
                 //console.log(Boolean(this.$store.state.innInfo.time.trim()));
                 if(!this.$store.state.innInfo.time.trim()) {
-                    this.innInfo.time = nextDate + ' 07:00';
+                    this.innInfo.time = nowDate;
                 }
             }
 

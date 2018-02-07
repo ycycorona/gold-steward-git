@@ -10,22 +10,23 @@
             <div class="img-wrap" @click="activeSelector($event)" data-picker-role="sender">
                 <img :src="basePath + '/mobile_src/imgs/sender.png'" width="50" alt="寄出">
                 <div>
-                    <x-icon v-if="!senderPickerTypeIsActiveInnAddSelector" type="android-train" size="25"></x-icon>
-                    <x-icon v-if="!senderPickerTypeIsActiveInnAddSelector" type="android-plane" size="25"></x-icon>
-                    <x-icon v-if="senderPickerTypeIsActiveInnAddSelector" type="ios-home" size="25"></x-icon>
+                    <x-icon  type="android-train" size="25"></x-icon>
+                    <x-icon  type="android-plane" size="25"></x-icon>
+                    <x-icon  type="ios-home" size="25"></x-icon>
                 </div>
             </div>
             <div>
-                <Divider @click.native="exchangePickerType">
+                <!--@click.native="exchangePickerType"-->
+                <Divider >
                     <x-icon type="ios-loop" size="25"></x-icon>
                 </Divider>
             </div>
             <div class="img-wrap" @click="activeSelector($event)" data-picker-role="receiver">
                 <img :src="basePath + '/mobile_src/imgs/receiver.png'" width="50" alt="领回">
                 <div>
-                    <x-icon v-if="!receiverPickerTypeTypeIsActiveInnAddSelector" type="android-train" size="25"></x-icon>
-                    <x-icon v-if="!receiverPickerTypeTypeIsActiveInnAddSelector" type="android-plane" size="25"></x-icon>
-                    <x-icon v-if="receiverPickerTypeTypeIsActiveInnAddSelector" type="ios-home" size="25"></x-icon>
+                    <x-icon  type="android-train" size="25"></x-icon>
+                    <x-icon  type="android-plane" size="25"></x-icon>
+                    <x-icon  type="ios-home" size="25"></x-icon>
                 </div>
             </div>
         </div>

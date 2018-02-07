@@ -10,11 +10,13 @@ function validateTime(type, time) {
     let dayStart = timeArray[0] + 'T' + '00:00:00+08:00';
     let sendLimit = timeArray[0] + 'T' + '12:00:00+08:00';
     let receiveLimit =timeArray[0] + 'T' + '16:00:00+08:00';
+    let receiveLimit_1 =timeArray[0] + 'T' + '21:00:00+08:00';
 
     let timeObj = new Date(timeArray[0] + 'T' + timeArray[1] + '+08:00');
     let dayStartObj = new Date(dayStart);
     let sendLimitObj = new Date(sendLimit);
     let receiveLimitObj = new Date(receiveLimit);
+    let receiveLimitObj_1 = new Date(receiveLimit_1);
     let nowObj = new Date();
 
     let flag_1 = true;
@@ -23,14 +25,14 @@ function validateTime(type, time) {
     let errorMsg = '';
 
     if (type === 'send'){
-        flag_1 = timeObj.valueOf() >= sendLimitObj.valueOf();
+        flag_1 = timeObj.valueOf() <= sendLimitObj.valueOf();
         if (!flag_1) {
-            errorMsg = '寄送时间不能早于12:00！';
+            errorMsg = '寄送时间不能晚于12:00！';
         }
     } else if (type === 'receive'){
-        flag_1 = timeObj.valueOf() >= receiveLimitObj.valueOf();
+        flag_1 = timeObj.valueOf() >= receiveLimitObj.valueOf() && timeObj.valueOf() <= receiveLimitObj_1.valueOf();
         if (!flag_1) {
-            errorMsg = '客户取货时间不能早于16:00！';
+            errorMsg = '客户取货时间不能早于16:00和大于21:00！';
         }
     } else {
         return false;

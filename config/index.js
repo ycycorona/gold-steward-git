@@ -1,8 +1,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 var basePath = 'http://qingyun.tunnel.echomod.cn/';
-var originBasePath = 'http://172.16.12.39:8888/';
-var proxyCookie = 'JSESSIONID=926C5DF37EF32D9414AF6AE403669073';
+var originBasePath = 'http://localhost:8888/';
+var proxyCookie = 'JSESSIONID=840C117D8407AB2FA12363011B7B9FF1';
 var Host = 'qingyun.tunnel.echomod.cn';
 module.exports = {
   build: {

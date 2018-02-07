@@ -8,7 +8,7 @@
                 <PopupHeader
                     left-text="取消"
                     right-text="确定"
-                    title="选择机场\火车站"
+                    title="选择地址"
                     :show-bottom-border="false"
                     @on-click-left="$store.commit('toggleSelectStationAddress',false);"
                     @on-click-right="confirmInput"></PopupHeader>
@@ -33,11 +33,11 @@
                     </cell>
                 </group>
                 <!--地址选择器-->
-                <Group title="选择机场/火车站">
+                <Group title="选择区域">
                     <PopupPicker
-                        :data='QDStationList'
+                        :data='QDdistrictList'
                         value-text-align="left"
-                        placeholder="选择机场/火车站"
+                        placeholder="选择区域"
                         show-name
                         :popup-style="{zIndex: 10002}"
                         ref="stationPicker"
@@ -45,8 +45,16 @@
                         @on-show="isPickerMaskShow=true"
                         @on-hide="isPickerMaskShow=false"></PopupPicker>
                 </Group>
+                <group title="详细地址">
+                    <x-input title="" v-model="stationInfo.address2" placeholder="输入详细地址"></x-input>
+                </group>
                 <group title="时间">
                     <datetime-view
+                        :min-hour="16"
+                        :max-hour="21"
+                        :start-date="nowDate_1"
+                        :end-date="nextMonthDate"
+                        :minute-list="['00', '30']"
                         v-model="stationInfo.time"
                         ref="datetime1"
                         format="YYYY-MM-DD HH:mm"></datetime-view>
@@ -69,10 +77,13 @@
         Masker
     } from 'vux'
     /*选择器数据初始化*/
-    import {QDStationList, QDStationListMap} from '../../data/addressData.js'
+    import {QDdistrictList, QDdistrictListMap} from '../../data/addressData.js'
     import validateTime from '../../util/validateTime.js'
     /*获得当前日期*/
     let nowDate = dateFormat(new Date(), 'YYYY-MM-DD HH:mm');
+    let nowDate_1 = dateFormat(new Date(), 'YYYY-MM-DD');
+    let nextDate = dateFormat(new Date(Number(new Date()) + 1000*3600*24), 'YYYY-MM-DD');
+    let nextMonthDate = dateFormat(new Date(Number(new Date()) + 1000*3600*24*30), 'YYYY-MM-DD');
     export default {
         name: 'SelectStationAddress',
         components: {
@@ -94,9 +105,11 @@
                     address0: "青岛市",
                     address1: ["0"],
                     address2: "",
-                    time: nowDate
+                    time: nextDate + '16:00'
                 },
-                QDStationList: QDStationList
+                QDdistrictList: QDdistrictList,
+                nowDate_1: nowDate_1,
+                nextMonthDate: nextMonthDate
             }
         },
         computed: {
@@ -110,7 +123,7 @@
                 }
             },
             address1_name(){
-                return QDStationListMap[this.stationInfo.address1[0]];
+                return QDdistrictListMap[this.stationInfo.address1[0]];
             },
             isTimeValidObj() {
                 return validateTime(this.SRtype, this.stationInfo.time);
@@ -118,7 +131,7 @@
         },
         methods: {
             confirmInput(){
-                if (!this.isTimeValidObj) {
+                if (!this.isTimeValidObj.flag) {
                     this.$vux.toast.show({
                         text: '输入有误',
                         type: 'warn',
@@ -133,7 +146,7 @@
             onShow() {
                 //如果总站的数据被清空了
                 if(!this.$store.state.stationInfo.time.trim()) {
-                    this.stationInfo.time = nowDate;
+                    this.stationInfo.time = nextDate + ' 16:00';
                 }
             }
         }
