@@ -20,16 +20,32 @@
         </template>
         <div class="vux-divider"></div>
         <h3>2、配送时间</h3>
-        <p class="alone">12:00前下单 16:00后提取</p>
+        <group
+        gutter="0"
+        class="district-group">
+            <p class="alone">12:00前下单 16:00后提取</p>
+        </group>
         <div class="vux-divider"></div>
         <h3>3、寄件交接方式</h3>
-        <p class="alone">前台/礼宾部转交</p>
+        <group
+            gutter="0"
+            class="district-group">
+            <p class="alone">前台/礼宾部转交</p>
+        </group>
         <div class="vux-divider"></div>
-        <h3>3、取件交接方式</h3>
-        <p class="alone">机场订单当面交接（T1航站楼或T2航站楼）</p>
+        <h3>4、取件交接方式</h3>
+        <group
+            gutter="0"
+            class="district-group">
+            <p class="alone">机场订单当面交接（T1航站楼或T2航站楼）</p>
+        </group>
         <div class="vux-divider"></div>
-        <h3>4、配送行李规格</h3>
-        <p class="alone">常规航空托运行李箱及背包</p>
+        <h3>5、配送行李规格</h3>
+        <group
+            gutter="0"
+            class="district-group">
+            <p class="alone">常规航空托运行李箱及背包</p>
+        </group>
     </div>
 </template>
 
@@ -104,15 +120,11 @@
                             {
                                 routeName: '青岛火车北站至酒店',
                                 routePrice: '179（含2件）'
-                            },
-                            {
-                                routeName: '市区酒店 至 酒店',
-                                routePrice: 35
                             }
                         ]
                     },
                     {
-                        districtName: '青岛市黄岛区',
+                        districtName: '崂山景区',
                         routes:[
                             {
                                 routeName: '景区酒店至流亭机场',
@@ -200,7 +212,7 @@
     }
     h3,
     p.alone{
-        padding: 0 15px;
+        padding: 10px 15px;
     }
 
 </style>

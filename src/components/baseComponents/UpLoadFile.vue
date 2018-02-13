@@ -9,7 +9,7 @@
             :upload-url="uploadUrl"
             size="small"
             :autoUpload="true"
-            title="上传照片"
+            title="上传行李照片"
             @preview="show"
         ></VuxUploadPart>
         <Previewer :list="previewImages" ref="previewer"></Previewer>
