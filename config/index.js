@@ -3,7 +3,7 @@ var path = require('path')
 var basePath = 'http://172.16.12.39/';
 /*var basePath = 'http://qingyun.tunnel.echomod.cn/';*/
 var originBasePath = 'http://localhost:8888/';
-var proxyCookie = 'JSESSIONID=F3A7858810AE3034CEE652F6944DC5BB';
+var proxyCookie = 'JSESSIONID=F0CC20CFC24D4DFF324A178C83D469F4';
 var Host = '172.16.12.39';
 /*var Host = 'qingyun.tunnel.echomod.cn';*/
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8888,
+    port: 8887,
     autoOpenBrowser: false,
     assetsSubDirectory: 'mobile_src',
     assetsPublicPath: '/',

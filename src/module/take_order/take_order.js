@@ -7,6 +7,9 @@ import App from './take_order.vue'
 import { AjaxPlugin, LoadingPlugin } from 'vux'
 import { setVarForJsp } from '../../util/setVarForJsp.js'
 import  { ToastPlugin } from 'vux'
+import  { ConfirmPlugin } from 'vux'
+
+Vue.use(ConfirmPlugin)
 Vue.use(ToastPlugin);
 /*使用jsp时，需要指定basepath {name:'para1',val:123}*/
 setVarForJsp();
@@ -81,7 +84,22 @@ let store = new Vuex.Store({
         },
         picContainer: []
     },
-    getters: {},
+    getters: {
+        addressLevel(state) {
+            if (state.innInfo.address1 === '黄岛区' || state.stationInfo.address1 === '黄岛区') {
+                return 1
+            } else {
+                return 0
+            }
+        },
+        isLaoShan(state) {
+            if (state.innInfo.address1 === '崂山区' || state.stationInfo.address1 === '崂山区') {
+                return true
+            } else {
+                return false
+            }
+        }
+    },
     mutations: {
         /*改变优惠名称*/
         changePreferentialPriceName(state, newValue) {
@@ -124,6 +142,20 @@ let store = new Vuex.Store({
         }
     },
 });
+
+
+/*添加全局属性的插件*/
+import addGlobalProperty from '@/vue_plugins/addGlobalProperty'
+
+/*需要被添加的全局属性*/
+import weChatLocation from '@/data_resource/weChatLocation'
+import ajaxDataSerialize from '@/util/ajaxDataSerialize'
+
+Vue.use(addGlobalProperty, [
+        {name: 'ajaxDataSerialize', value: ajaxDataSerialize},
+        {name: 'weChatLocation', value: weChatLocation}
+    ]
+);
 
 FastClick.attach(document.body)
 

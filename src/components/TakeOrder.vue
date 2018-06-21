@@ -61,13 +61,16 @@
                 </flexbox-item>
             </flexbox>
         </div>
+        <div v-if="isLaoShan" style="padding: 10px 15px 0 15px;color: darkred;font-weight: bold">
+            您选择的地址包含 <span style="font-size: 1.2em;color:red">崂山区</span> ，请务必下单前联系客服确认地址是否可用！
+        </div>
         <!--件数保价等-->
         <Group>
             <!--行李件数-->
             <Cell
                 inline-desc="上限为10件">
                 <div slot="title">
-                    行李件数<span style="padding-left: 1rem">￥39/件</span>
+                    行李件数<span style="padding-left: 1rem"> {{orderInfo.unitPriceName}}</span>
                 </div>
                 <InlineXNumber v-model="orderInfo.luggageNumber" style="display:block;" :min="0" width="50px"
                                button-style="round"></InlineXNumber>
@@ -169,6 +172,11 @@
         },
         created(){
             this.getListCoupon();
+
+            //this.$weChatLocation();
+        },
+        mounted() {
+
         },
         data () {
             return {
@@ -187,6 +195,8 @@
                 orderInfo: {
                     luggageNumber: 0, //行李数量
                     luggageUnitPrice: 39, //行李单价
+                    luggageHDUnitPrice: 199, //黄岛前两件价格
+                    luggageHDExtraUnitPrice: 50,//黄岛两件之外价格
                     //flgInsurance: true, //是否保价
                     insurancePrice: 2, //保费
                     //insuranceAmount: 0, 保额
@@ -196,7 +206,9 @@
                     customerMobile: "", //联系人电话
                     //needInvoice: false, 是否需要发票
                     couponId: 0, //选中的优惠券
-                    remark: "" //用户备注
+                    remark: "", //用户备注
+                    unitPriceName: "￥39/件",
+                    addressLevel: 0
                 },
                 listCoupon: [], //可用的优惠券
 
@@ -222,6 +234,12 @@
                 } else {
                     return this.$store.state.stationInfo;
                 }
+            },
+            addressLevel() {
+                return this.$store.getters.addressLevel;
+            },
+            isLaoShan() {
+                return this.$store.getters.isLaoShan;
             }
         },
         filters: {
@@ -271,18 +289,49 @@
 
         },
         watch: {
+            addressLevel(val) {
+                this.orderInfo.addressLevel = val;
+            },
             /*深度监听data属性orderInfo的变动*/
             orderInfo: {
                 handler: function (val) {
                     let rawOrderInfo = this.orderInfo;
                     /*需要计算的属性*/
                     let obj = {
-                        sendCost: this.orderInfo.luggageNumber * rawOrderInfo.luggageUnitPrice, //行李寄送费用
                         insuranceCost: this.orderInfo.insurancePrice * rawOrderInfo.luggageNumber, //保险总费用
                         insuranceUnitPrice: this.insuranceAmountMap[rawOrderInfo.insurancePrice],
                         insuranceAmount: this.insuranceAmountMap[rawOrderInfo.insurancePrice] * rawOrderInfo.luggageNumber, //总保额
                         // flgInsurance : BooleanToNum(rawOrderInfo.insurancePrice !== 0), 是否保价，布尔值转成数字
                     };
+                    //计算寄送费用
+                    if (rawOrderInfo.addressLevel === 1) {
+                        obj.sendCost = (() => {
+                            let sendCost = 0;
+                            switch (this.orderInfo.luggageNumber) {
+                                case 0: {
+                                    sendCost = 0;
+                                }
+                                break;
+                                case 1: {
+                                    sendCost = 199;
+                                }
+                                break;
+                                case 2: {
+                                    sendCost = 199;
+                                }
+                                break;
+                                default: {
+                                    sendCost = rawOrderInfo.luggageHDUnitPrice + (this.orderInfo.luggageNumber-2) * rawOrderInfo.luggageHDExtraUnitPrice
+                                }
+                            }
+                            return sendCost
+                        })();
+                        rawOrderInfo.unitPriceName = "￥199/2件";
+                    } else {
+                        obj.sendCost = this.orderInfo.luggageNumber * rawOrderInfo.luggageUnitPrice; //行李寄送费用
+                        rawOrderInfo.unitPriceName = "￥39/件";
+                    }
+
                     /*直接从data拷贝过来的属性*/
                     for (let i in rawOrderInfo) {
                         obj[i] = rawOrderInfo[i];

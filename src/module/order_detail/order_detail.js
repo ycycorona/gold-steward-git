@@ -4,7 +4,9 @@ import Vue from "vue";
 import FastClick from "fastclick";
 import Vuex from "vuex";
 import App from "./order_detail.vue";
-import {AjaxPlugin, LoadingPlugin, ToastPlugin} from "vux";
+import {AjaxPlugin, LoadingPlugin, ToastPlugin, ConfirmPlugin} from "vux";
+
+
 
 import { setVarForJsp } from '../../util/setVarForJsp.js'
 /*用tyr-catch来测试处于正式还是开发环境，进行不同的变量配置，使用jsp时，需要指定basepath*/
@@ -17,6 +19,7 @@ try {
 Vue.use(LoadingPlugin)
 Vue.use(AjaxPlugin)
 Vue.use(ToastPlugin)
+Vue.use(ConfirmPlugin)
 
 Vue.use(Vuex)
 //vuex配置

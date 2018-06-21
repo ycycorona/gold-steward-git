@@ -74,7 +74,7 @@
         <group>
             <cell title="订单编号" :value="luggage.orderNo"></cell>
             <cell title="客户姓名" :value="luggage.customerName"></cell>
-            <cell title="手机号码" :value="luggage.customerMobile"></cell>
+            <cell title="手机号码" :value="luggage.customerMobile" :link="'tel:' + luggage.customerMobile"></cell>
         </group>
         <group>
             <cell title="行李件数" :value="luggage.luggageNumber + '件'"></cell>
@@ -219,106 +219,129 @@
              * @desc 行李员取件操作
              */
             sendLuggageFrom() {
-
-                let r = confirm("是否确认操作");
-                if (r === false) {
-                    return;
-                }
-
-                this.$vux.loading.show({
-                    text: '正在与后台通信'
-                });
-                let url = URLLists.sendLuggageFrom + '?id=' + this.id;
-                this.$http.get(url)
-                    .then((res) => {
-                        console.log(res);
-                        this.luggage = res.data.data;
-                        this.$vux.loading.hide();
-                    })
-                    .catch((code) => {
-                        console.log('获取数据时与后台通讯失败', code);
-                        this.$vux.loading.hide();
-                    });
+                const _this = this;
+                this.$vux.confirm.show({
+                    title: '请确认',
+                    content: `是否确认取件`,
+                    onCancel () {
+                        console.log('用户操作取消');
+                    },
+                    onConfirm () {
+                        _this.$vux.loading.show({
+                            text: '正在与后台通信'
+                        });
+                        let url = URLLists.sendLuggageFrom + '?id=' + _this.id;
+                        _this.$http.get(url)
+                            .then((res) => {
+                                console.log(res);
+                                _this.luggage = res.data.data;
+                                _this.$vux.loading.hide();
+                            })
+                            .catch((code) => {
+                                console.log('获取数据时与后台通讯失败', code);
+                                _this.$vux.loading.hide();
+                            });
+                    }
+                })
             },
             /**
              * @desc 行李已送达
              */
             sendLuggageTo() {
+                const _this = this;
+                this.$vux.confirm.show({
+                    title: '请确认',
+                    content: `是否确认送达`,
+                    onCancel () {
+                        console.log('用户操作取消');
+                    },
+                    onConfirm () {
+                        _this.$vux.loading.show({
+                            text: '正在与后台通信'
+                        });
+                        let url = URLLists.sendLuggageTo + '?id=' + _this.id;
+                        _this.$http.get(url)
+                            .then((res) => {
+                                console.log(res);
+                                _this.luggage = res.data.data;
+                                _this.$vux.loading.hide();
+                            })
+                            .catch((code) => {
+                                console.log('获取数据时与后台通讯失败', code);
+                                _this.$vux.loading.hide();
+                            });
+                    }
+                })
 
-                let r = confirm("是否确认操作");
-                if (r === false) {
-                    return;
-                }
 
-                this.$vux.loading.show({
-                    text: '正在与后台通信'
-                });
-                let url = URLLists.sendLuggageTo + '?id=' + this.id;
-                this.$http.get(url)
-                    .then((res) => {
-                        console.log(res);
-                        this.luggage = res.data.data;
-                        this.$vux.loading.hide();
-                    })
-                    .catch((code) => {
-                        console.log('获取数据时与后台通讯失败', code);
-                        this.$vux.loading.hide();
-                    });
             },
             /**
              * @desc 客户已取行李
              */
             completeLuggage() {
+                const _this = this;
+                this.$vux.confirm.show({
+                    title: '请确认',
+                    content: `是否确认客户已取行李`,
+                    onCancel () {
+                        console.log('用户操作取消');
+                    },
+                    onConfirm () {
+                        _this.$vux.loading.show({
+                            text: '正在与后台通信'
+                        });
+                        let url = URLLists.completeLuggage + '?id=' + _this.id;
+                        _this.$http.get(url)
+                            .then((res) => {
+                                console.log(res);
+                                _this.luggage = res.data.data;
+                                _this.$vux.loading.hide();
+                            })
+                            .catch((code) => {
+                                console.log('获取数据时与后台通讯失败', code);
+                                _this.$vux.loading.hide();
+                            });
+                    }
+                })
 
-                let r = confirm("是否确认操作");
-                if (r === false) {
-                    return;
-                }
 
-                this.$vux.loading.show({
-                    text: '正在与后台通信'
-                });
-                let url = URLLists.completeLuggage + '?id=' + this.id;
-                this.$http.get(url)
-                    .then((res) => {
-                        console.log(res);
-                        this.luggage = res.data.data;
-                        this.$vux.loading.hide();
-                    })
-                    .catch((code) => {
-                        console.log('获取数据时与后台通讯失败', code);
-                        this.$vux.loading.hide();
-                    });
             },
             /**
              * @desc 删除订单
              */
             deleteLuggage() {
 
-                let r = confirm("是否确认操作");
-                if (r === false) {
-                    return;
-                }
+                const _this = this;
+                this.$vux.confirm.show({
+                    title: '请确认',
+                    content: `是否确认删除订单`,
+                    onCancel () {
+                        console.log('用户操作取消');
+                    },
+                    onConfirm () {
+                        _this.$vux.loading.show({
+                            text: '正在与后台通信'
+                        });
+                        let url = URLLists.deleteLuggage + '?id=' + _this.id;
+                        _this.$http.get(url)
+                            .then((res) => {
+                                console.log(res);
+                                //this.luggage = res.data.data;
+                                _this.$vux.loading.hide();
+                                if (res.data.successFlag == true) {
+                                    _this.deleteThenReturnList();
+                                } else {
+                                    _this.deleteFailMsg();
+                                }
+                            })
+                            .catch((code) => {
+                                console.log('获取数据时与后台通讯失败', code);
+                                _this.$vux.loading.hide();
+                            });
+                    }
+                })
 
-                this.$vux.loading.show({
-                    text: '正在与后台通信'
-                });
-                let url = URLLists.deleteLuggage + '?id=' + this.id;
-                this.$http.get(url)
-                    .then((res) => {
-                        console.log(res);
-                        //this.luggage = res.data.data;
-                        this.$vux.loading.hide();
-                        if (res.data.successFlag == true) {
-                            this.deleteThenReturnList();
-                        } else {
-                            this.deleteFailMsg();
-                        }
-                    })
-                    .catch((code) => {
-                        console.log('获取数据时与后台通讯失败', code);
-                        this.$vux.loading.hide();
-                    });
+
             },
             /**
              * @desc 获取用户基本信息

@@ -18,6 +18,8 @@
                     :value="route.routePrice"> </cell>
             </group>
         </template>
+        <div style="padding: 0 10px;color: darkred">注1：黄岛区托运行李超过2件后，50元/件</div>
+        <div style="padding: 0 10px;color: darkred">注2：崂山区下单前请先联系客服确认地址是否可到达</div>
         <div class="vux-divider"></div>
         <h3>2、配送时间</h3>
         <group
@@ -66,31 +68,23 @@
                         routes:[
                             {
                                 routeName: '酒店至流亭机场',
-                                routePrice: '39'
+                                routePrice: '39/件'
                             },
                             {
                                 routeName: '流亭机场至酒店',
-                                routePrice: '39'
+                                routePrice: '39/件'
                             },
                             {
                                 routeName: '酒店 至 青岛站',
-                                routePrice: '35'
+                                routePrice: '39/件'
                             },
                             {
                                 routeName: '青岛站 至 酒店',
-                                routePrice: '35'
-                            },
-                            {
-                                routeName: '酒店至青岛火车北站',
-                                routePrice: '35'
-                            },
-                            {
-                                routeName: '青岛火车北站至酒店',
-                                routePrice: '35'
+                                routePrice: '39/件'
                             },
                             {
                                 routeName: '市区酒店 至 酒店',
-                                routePrice: '35'
+                                routePrice: '39/件'
                             }
                         ]
                     },
@@ -107,50 +101,19 @@
                             },
                             {
                                 routeName: '酒店 至 青岛站',
-                                routePrice: '159（含2件）'
+                                routePrice: '199（含2件）'
                             },
                             {
                                 routeName: '青岛站 至 酒店',
-                                routePrice: '159（含2件）'
-                            },
-                            {
-                                routeName: '酒店至青岛火车北站',
-                                routePrice: '179（含2件）'
-                            },
-                            {
-                                routeName: '青岛火车北站至酒店',
-                                routePrice: '179（含2件）'
-                            }
-                        ]
-                    },
-                    {
-                        districtName: '崂山景区',
-                        routes:[
-                            {
-                                routeName: '景区酒店至流亭机场',
-                                routePrice: '199（含2件）'
-                            },
-                            {
-                                routeName: '景区酒店至市内酒店',
-                                routePrice: '199（含2件）'
-                            },
-                            {
-                                routeName: '景区酒店至青岛站',
                                 routePrice: '199（含2件）'
                             }
                         ]
                     },
-
                 ]
 
             }
         },
         computed: {
-
-
-
-
-
         },
         watch: {}
     }

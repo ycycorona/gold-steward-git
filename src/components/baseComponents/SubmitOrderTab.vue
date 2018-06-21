@@ -18,9 +18,19 @@
             <div class="money-detail-wrap">
                 <group :gutter="0">
                     <Cell title="行李寄送费用">
-                        <span>￥{{computedCost.luggageUnitPrice}} x {{computedCost.luggageNumber}}</span>
+                        <template v-if="computedCost.addressLevel==0">
+                            <span>￥{{computedCost.luggageUnitPrice}} x {{computedCost.luggageNumber}}</span>
+                        </template>
+                        <template
+                        v-if="computedCost.addressLevel==1 && (computedCost.luggageNumber==1||computedCost.luggageNumber==2)">
+                            <span>￥{{computedCost.luggageHDUnitPrice}}/2件</span>
+                        </template>
+                        <template
+                            v-if="computedCost.addressLevel==1 && (computedCost.luggageNumber>2)">
+                            <span>￥{{computedCost.luggageHDUnitPrice}}前2件 + {{computedCost.luggageHDExtraUnitPrice}} x {{computedCost.luggageNumber-2}}</span>
+                        </template>
                     </Cell>
-                    <Cell title="保价金额" v-if="computedCost.luggageNumber!=0">
+                    <Cell title="保价金额" v-if="computedCost.luggageNumber!=0 && computedCost.luggageNumber">
                         <span>￥{{computedCost.insurancePrice}} x {{computedCost.luggageNumber}}</span>
                     </Cell>
                     <Cell :title="preferentialPriceName" v-if="computedCost.luggageNumber!=0">
